@@ -1,0 +1,22 @@
+.login-button {
+  width: 100%;
+  background: linear-gradient(to right, #f97316, #ea580c);
+  color: white;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s;
+}
+
+.login-button:hover {
+  background: linear-gradient(to right, #ea580c, #c2410c);
+  transform: scale(1.05);
+}
+
+.login-button:active {
+  transform: scale(0.98);
+}
