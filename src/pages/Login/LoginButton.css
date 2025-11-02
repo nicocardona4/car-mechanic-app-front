@@ -12,11 +12,17 @@
   transition: all 0.2s;
 }
 
-.login-button:hover {
+.login-button:hover:not(:disabled) {
   background: linear-gradient(to right, #ea580c, #c2410c);
   transform: scale(1.05);
 }
 
-.login-button:active {
+.login-button:active:not(:disabled) {
   transform: scale(0.98);
+}
+
+.login-button:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+  opacity: 0.6;
 }
