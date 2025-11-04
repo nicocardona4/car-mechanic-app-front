@@ -1,78 +1,184 @@
-import { useState } from "react"
+import { useState } from "react";
+import './Signup.css';
 
-const Signup = ({ onLogin }) => {
+const API_URL = 'https://car-mechanic-ten.vercel.app';
+
+const Signup = ({ onSuccess, onGoToLogin }) => {
   const [formData, setFormData] = useState({
-    fullName: "",
+    username: "",
     email: "",
     password: "",
-  })
+    repeatPassword: "",
+    plan: "plus"
+  });
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value })
-  }
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setError('');
+  };
+
+  const passwordsMatch = formData.password === formData.repeatPassword && formData.password !== '';
+  const isFormValid = formData.username && formData.email && formData.password && passwordsMatch;
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    console.log("Signup data:", formData)
-    // Aquí iría la lógica para registrar al usuario localmente
-    alert(`User ${formData.fullName} registered successfully!`)
-    setFormData({ fullName: "", email: "", password: "" })
-  }
+    e.preventDefault();
+    
+    if (!isFormValid) {
+      setError('Please complete all fields correctly');
+      return;
+    }
+
+    setLoading(true);
+    setError('');
+
+    const { repeatPassword, ...signupData } = formData;
+
+    fetch(`${API_URL}/v1/signup`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(signupData)
+    })
+      .then(response => {
+        console.log('Response status:', response.status);
+        if (response.status !== 200 && response.status !== 201) {
+          return response.json().then(err => {
+            throw new Error(err.message || 'Signup failed');
+          });
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('Signup successful:', data);
+        onSuccess(data);
+      })
+      .catch(error => {
+        console.error('Signup error:', error);
+        setError(error.message || 'Signup failed');
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
 
   return (
-    <div className="d-flex justify-content-center align-items-center vh-100">
-      <div className="signup-container p-4 shadow-sm rounded bg-white" style={{ minWidth: "320px", maxWidth: "400px", width: "100%" }}>
-        <h2 className="mb-4 text-center">Sign Up</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <label className="form-label">Full Name</label>
-            <input
-              type="text"
-              name="fullName"
-              value={formData.fullName}
-              onChange={handleChange}
-              className="form-control"
-              placeholder="Your full name"
-              required
-            />
+    <div className="signup-container">
+      <div className="signup-wrapper">
+        <div className="signup-header">
+          <div className="signup-logo">
+            <span className="logo-icon">🔧</span>
           </div>
-          <div className="mb-3">
-            <label className="form-label">Email</label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              className="form-control"
-              placeholder="you@example.com"
-              required
-            />
-          </div>
-          <div className="mb-3">
-            <label className="form-label">Password</label>
-            <input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              className="form-control"
-              placeholder="Password"
-              required
-            />
-          </div>
-          <button type="submit" className="btn btn-primary w-100 mb-3">
-            Sign Up
-          </button>
-        </form>
-        <div className="text-center">
-          <span>Already have an account? </span>
-          <button className="btn btn-link p-0" onClick={onLogin}>
-            Login
-          </button>
+          <h1 className="signup-title">Create Account</h1>
+          <p className="signup-subtitle">Join Mechanic App</p>
+        </div>
+
+        <div className="signup-form-card">
+          <h2 className="form-title">Sign Up</h2>
+          
+          <form onSubmit={handleSubmit} className="form-content">
+            <div className="input-field">
+              <label className="input-label">Username</label>
+              <input
+                type="text"
+                name="username"
+                value={formData.username}
+                onChange={handleChange}
+                className="input-control"
+                placeholder="Your username"
+              />
+            </div>
+
+            <div className="input-field">
+              <label className="input-label">Email</label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                className="input-control"
+                placeholder="you@example.com"
+              />
+            </div>
+
+            <div className="input-field">
+              <label className="input-label">Password</label>
+              <input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                className="input-control"
+                placeholder="Password"
+              />
+            </div>
+
+            <div className="input-field">
+              <label className="input-label">Repeat Password</label>
+              <input
+                type="password"
+                name="repeatPassword"
+                value={formData.repeatPassword}
+                onChange={handleChange}
+                className="input-control"
+                placeholder="Repeat password"
+                style={{ 
+                  borderColor: formData.repeatPassword && !passwordsMatch ? '#f87171' : '#d1d5db'
+                }}
+              />
+              {formData.repeatPassword && !passwordsMatch && (
+                <small style={{ color: '#dc2626', fontSize: '0.875rem', marginTop: '0.25rem' }}>
+                  Passwords don't match
+                </small>
+              )}
+            </div>
+
+            <div className="input-field">
+              <label className="input-label">Plan</label>
+              <select
+                name="plan"
+                value={formData.plan}
+                onChange={handleChange}
+                className="input-control"
+              >
+                <option value="plus">Plus (10 services)</option>
+                <option value="premium">Premium (unlimited)</option>
+              </select>
+            </div>
+
+            {error && (
+              <div className="error-message">
+                {error}
+              </div>
+            )}
+
+            <button 
+              type="submit" 
+              className="signup-button"
+              disabled={!isFormValid || loading}
+            >
+              {loading ? 'Creating account...' : 'Sign Up'}
+            </button>
+
+            <div className="form-footer">
+              <p className="footer-text">
+                Already have an account?{' '}
+                <button type="button" onClick={onGoToLogin} className="footer-link-button">
+                  Login
+                </button>
+              </p>
+            </div>
+          </form>
+        </div>
+
+        <div className="signup-footer">
+          <p>© 2025 Best App - All rights reserved to Nico and Cande</p>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Signup
+export default Signup;

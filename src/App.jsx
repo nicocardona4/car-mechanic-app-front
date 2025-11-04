@@ -1,26 +1,20 @@
-import { Provider } from 'react-redux'
 import './App.css'
+import { useState, useEffect } from 'react'
 import Login from './pages/Login/Login'
-import {store} from './store/store'
+import Signup from './pages/signup/Signup'
 import Dashboard from './pages/dashboard/Dashboard'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import Signup from './pages/signup/signup'
-import { BrowserRouter, Route, Routes } from 'react-router'
-import { ToastContainer } from 'react-toastify'
+// import Signup from './pages/signup/signup';
 
 const App = () => {
   return (
     <Provider store={store}>
-      <ToastContainer />
-      <BrowserRouter>
-        <Routes>
-          <Route path='/login' element={<Login/>}/>
-          <Route path='/signup' element={<Signup/>}/>
-          <Route path='/dashboard' element={<Dashboard/>}/>
-          <Route path='/' element={<Dashboard/>}/>
-        </Routes>
-      </BrowserRouter>
+      <Signup />
+    <div className='app-container'>
+      <Login />
+      <Dashboard />
+    </div>
     </Provider>
     
   )

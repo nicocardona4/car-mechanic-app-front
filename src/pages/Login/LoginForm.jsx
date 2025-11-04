@@ -2,9 +2,9 @@ import './LoginForm.css';
 import InputField from './InputField';
 import LoginButton from './LoginButton';
 
-const LoginForm = ({ username, password, setUsername, setPassword, error, handleSubmit }) => {
+const LoginForm = ({ username, password, setUsername, setPassword, error, loading, handleSubmit, onGoToSignup }) => {
   const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' && !loading) {
       handleSubmit();
     }
   };
@@ -16,7 +16,7 @@ const LoginForm = ({ username, password, setUsername, setPassword, error, handle
       <div className="form-content">
         <InputField
           id="username"
-          label="Usuario"
+          label="username"
           type="text"
           icon="👤"
           value={username}
@@ -27,7 +27,7 @@ const LoginForm = ({ username, password, setUsername, setPassword, error, handle
 
         <InputField
           id="password"
-          label="Contraseña"
+          label="password"
           type="password"
           icon="🔒"
           value={password}
@@ -45,14 +45,25 @@ const LoginForm = ({ username, password, setUsername, setPassword, error, handle
         <div className="form-options">
           <label className="remember-me">
             <input type="checkbox" className="checkbox" />
-            <span>Recordarme</span>
+            <span>remember me</span>
           </label>
           <a href="#" className="forgot-password">
             ¿Forgot your passw?
           </a>
         </div>
 
-        <LoginButton onClick={handleSubmit} />
+        <LoginButton onClick={handleSubmit} disabled={loading || !username || !password}>
+          {loading ? 'Loading...' : 'Login'}
+        </LoginButton>
+
+        <div className="form-footer">
+          <p className="footer-text">
+            Don't have an account?{' '}
+            <button onClick={onGoToSignup} className="footer-link-button">
+              Sign Up
+            </button>
+          </p>
+        </div>
       </div>
     </div>
   );

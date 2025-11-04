@@ -60,8 +60,10 @@
 }
 
 .form-footer {
-  margin-top: 1.5rem;
+  margin-top: 1rem;
   text-align: center;
+  padding-top: 1rem;
+  border-top: 1px solid #e5e7eb;
 }
 
 .footer-text {
@@ -70,12 +72,18 @@
   margin: 0;
 }
 
-.footer-link {
+.footer-link-button {
+  background: none;
+  border: none;
   color: #f97316;
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  font-size: 0.875rem;
 }
 
-.footer-link:hover {
+.footer-link-button:hover {
   color: #ea580c;
+  text-decoration: underline;
 }
