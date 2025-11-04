@@ -1,29 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit"
 
 const initialState = {
-  services: [
-    {
-      id: 1,
-      customerName: "Juan Pérez",
-      status: "pending",
-      licensePlate: "ABC-123",
-      serviceType: "repair"
-    },
-    {
-      id: 2,
-      customerName: "María Gómez",
-      status: "in-progress",
-      licensePlate: "XYZ-987",
-      serviceType: "repair"
-    },
-    {
-      id: 3,
-      customerName: "Carlos López",
-      status: "completed",
-      licensePlate: "LMN-456",
-      serviceType: "maintenance"
-    }
-  ]
+  services: []
 };
 
 
@@ -52,10 +30,15 @@ export const servicesSlice = createSlice({
 
            // const {id, updatedTodo} = action.payload
             state.services = state.services.map(service => service.id === id ? {...service, ...updatedService} : service)
+        },
+        setServicesLoading: (state, action) => {
+            state.isLoading = action.payload;
         }
+
+        
     }
 })
 
-export const {  setServices, addService, deleteService, updateService } = servicesSlice.actions;
+export const {  setServicesLoading, setServices, addService, deleteService, updateService } = servicesSlice.actions;
 
 export default servicesSlice.reducer;

@@ -1,9 +1,58 @@
-import { useSelector } from "react-redux"
+import { useSelector , useDispatch} from "react-redux"
 import { AddService } from "./AddService"
 import ServiceTable  from "./ServiceTable"
+import { useNavigate } from "react-router";
+import { setServices , setServicesLoading } from "../../features/servicesSlice";
+import { useEffect, useState } from "react";
+import { BASE_DOMAIN_APP } from "../../api/config";
+
+
 
 const ServiceList = () => {
   const services = useSelector(state => state.services.services)
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+   useEffect(() => {
+    localStorage.setItem("userToken", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRlZmVuc2EiLCJ1c2VySWQiOiI2OGVlZTc2OTZiMjM3N2Y2MzczNTYwNWMiLCJpYXQiOjE3NjIyMjI5NzYsImV4cCI6MTc2MjIyNjU3Nn0.mo2FXEQGYi587XEgBHJubiWUjM26spmL8w3VQc1Mgsk");
+    const token = localStorage.getItem("userToken");
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
+    dispatch(setServicesLoading(true));
+    fetch(BASE_DOMAIN_APP + "/v1/services",
+      {
+        method: "GET",
+        headers: {
+          "authorization": token
+        }
+      }
+    )
+      .then(response => {
+        console.log("Response status:", response.status);
+        console.log("Response:", response);
+        if (response.ok) {
+          console.log("Response OK");
+          return response.json();
+        }
+        if (response.status === 401) {
+          console.log("Response UNAUTHORIZED");
+          throw new Error("UNAUTHORIZED");
+        }
+      })
+      .then(data => {
+        console.log("Fetched services:", data);
+        dispatch(setServices(data))
+      })
+      .catch(e => {
+        if (e.message === "UNAUTHORIZED") {
+          reauth(navigate)
+        }
+      })
+      .finally(() => dispatch(setServicesLoading(false)));
+  }, [])
 
   return (
     <div className="todos-table shadow-sm p-6 rounded-xl bg-white">
