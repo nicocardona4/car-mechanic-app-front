@@ -48,7 +48,7 @@ const ServiceList = () => {
       })
       .catch(e => {
         if (e.message === "UNAUTHORIZED") {
-          reauth(navigate)
+          navigate('/login');
         }
       })
       .finally(() => dispatch(setServicesLoading(false)));

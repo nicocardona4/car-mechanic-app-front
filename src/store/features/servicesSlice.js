@@ -41,7 +41,7 @@ export const servicesSlice = createSlice({
 
 export const fetchServices = (token) => {
     return (dispatch, getState) => {
-        console.log('Fetching services with token:', token);
+        console.log('Fetching services with token: v1/services', token);
         dispatch(setLoading(true));
         
         fetch(`${API_URL}/v1/services`, {
@@ -61,7 +61,6 @@ export const fetchServices = (token) => {
             dispatch(setLoading(false));
         })
         .catch(error => {
-            console.error('Error:', error);
             dispatch(setError(error.message));
             dispatch(setLoading(false));
         });
