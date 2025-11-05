@@ -39,16 +39,15 @@ export const servicesSlice = createSlice({
 })
 
 
-export const fetchServices = () => {
+export const fetchServices = (token) => {
     return (dispatch, getState) => {
-        const user = JSON.parse(localStorage.getItem('user'));
-        
+        console.log('Fetching services with token:', token);
         dispatch(setLoading(true));
         
         fetch(`${API_URL}/v1/services`, {
             headers: {
                 'Content-Type': 'application/json',
-                'Auth': `Bearer ${user.token}`
+                'Authorization': `${token}`
             }
         })
         .then(response => {
@@ -77,7 +76,7 @@ export const createService = (serviceData) => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Auth': `Bearer ${user.token}`
+                'Auth': `${user.token}`
             },
             body: JSON.stringify(serviceData)
         })
@@ -104,7 +103,7 @@ export const removeService = (id) => {
         fetch(`${API_URL}/v1/services/${id}`, {
             method: 'DELETE',
             headers: {
-                'Auth': `Bearer ${user.token}`
+                'Auth': `${user.token}`
             }
         })
         .then(response => {
@@ -128,7 +127,7 @@ export const modifyService = (id, updates) => {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${user.token}`
+                'Authorization': `${user.token}`
             },
             body: JSON.stringify(updates)
         })

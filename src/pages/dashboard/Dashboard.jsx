@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchServices, createService, removeService, modifyService } from '../../store/features/servicesSlice';
+import { useNavigate } from 'react-router';
 
 const API_URL = '';
 
@@ -22,21 +23,29 @@ function Dashboard({ user, onLogout }) {
   const [imageUrl, setImageUrl] = useState('');
   const [description, setDescription] = useState('');
 
-  // Cargar datos iniciales
-  useEffect(() => {
-    dispatch(fetchServices());
-    loadServiceTypes();
+const navigate = useNavigate();
+
+useEffect(() => {
+
+    const token = localStorage.getItem('userToken');
+    if (!token) {
+      navigate("/login")
+      return;
+    }
+    dispatch(fetchServices(token));
+    loadServiceTypes(token);
   }, [dispatch]);
 
-  const loadServiceTypes = () => {
+  const loadServiceTypes = (token) => {
     fetch(`${API_URL}/v1/service-types`, {
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${user.token}`
+        'Authorization': `${token}`
       }
     })
       .then(response => {
         if (response.status !== 200) {
+          console.error('Error fetching service types:', response);
           throw new Error('Error al cargar tipos de servicio');
         }
         return response.json();
@@ -134,8 +143,8 @@ function Dashboard({ user, onLogout }) {
       {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '30px' }}>
         <div>
-          <h1>Dashboard</h1>
-          <p>Welcome, {user.username}</p>
+          {user && <h1>Dashboard</h1>}
+          {user && <p>Welcome, {user.username}</p>}
         </div>
         <button 
           onClick={onLogout}

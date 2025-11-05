@@ -1,15 +1,18 @@
 import { useState } from "react";
 import './Signup.css';
+import { useNavigate } from "react-router";
 
 const API_URL = 'https://car-mechanic-ten.vercel.app';
 
-const Signup = ({ onSuccess, onGoToLogin }) => {
+const Signup = ({ onGoToLogin }) => {
+const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     username: "",
     email: "",
     password: "",
     repeatPassword: "",
-    plan: "plus"
+    userType: "plus"
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -34,7 +37,7 @@ const Signup = ({ onSuccess, onGoToLogin }) => {
     setError('');
 
     const { repeatPassword, ...signupData } = formData;
-
+    console.log('Submitting signup data:', signupData);
     fetch(`${API_URL}/v1/signup`, {
       method: 'POST',
       headers: {
@@ -53,7 +56,8 @@ const Signup = ({ onSuccess, onGoToLogin }) => {
       })
       .then(data => {
         console.log('Signup successful:', data);
-        onSuccess(data);
+        localStorage.setItem('userToken', data.token);
+        navigate("/dashboard");
       })
       .catch(error => {
         console.error('Signup error:', error);
