@@ -1,28 +1,32 @@
-import { useSelector , useDispatch} from "react-redux"
-import { AddService } from "./AddService"
+import { useDispatch, useSelector } from "react-redux"
 import ServiceTable  from "./ServiceTable"
 import { useNavigate } from "react-router";
-import { setServices , setServicesLoading } from "../../features/servicesSlice";
+import { setServices , setServicesLoading } from "../../store/features/servicesSlice";
 import { useEffect, useState } from "react";
-import { BASE_DOMAIN_APP } from "../../api/config";
+import { API_URL } from "../../api/config";
+import Spinner from "../../components/Spinner";
+import { reauth } from "../../utils/reauthUtils";
+
 
 
 
 const ServiceList = () => {
-  const services = useSelector(state => state.services.services)
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+
    useEffect(() => {
-    localStorage.setItem("userToken", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRlZmVuc2EiLCJ1c2VySWQiOiI2OGVlZTc2OTZiMjM3N2Y2MzczNTYwNWMiLCJpYXQiOjE3NjIyMjI5NzYsImV4cCI6MTc2MjIyNjU3Nn0.mo2FXEQGYi587XEgBHJubiWUjM26spmL8w3VQc1Mgsk");
     const token = localStorage.getItem("userToken");
     if (!token) {
-      navigate("/login");
+      reauth(navigate);
       return;
     }
-
-    dispatch(setServicesLoading(true));
-    fetch(BASE_DOMAIN_APP + "/v1/services",
+    console.log(setServicesLoading);
+    console.log("Loading desde selector (antes del fetch):", loading);
+     dispatch(setServicesLoading(true));
+  console.log("Después del setServicesLoading dispatch (pero antes del re-render):", loading);
+  
+    fetch(API_URL + "/v1/services",
       {
         method: "GET",
         headers: {
@@ -31,33 +35,46 @@ const ServiceList = () => {
       }
     )
       .then(response => {
-        console.log("Response status:", response.status);
-        console.log("Response:", response);
         if (response.ok) {
-          console.log("Response OK");
           return response.json();
         }
         if (response.status === 401) {
-          console.log("Response UNAUTHORIZED");
           throw new Error("UNAUTHORIZED");
         }
       })
       .then(data => {
-        console.log("Fetched services:", data);
         dispatch(setServices(data))
       })
       .catch(e => {
         if (e.message === "UNAUTHORIZED") {
-          navigate('/login');
+          reauth(navigate);
         }
       })
-      .finally(() => dispatch(setServicesLoading(false)));
-  }, [])
+      .finally(() => {
+        dispatch(setServicesLoading(false));
+      });
+  }, []);
+
+  const services = useSelector(state => state.services.services);
+  const loading = useSelector(state => state.services.loading);
+
+  console.log("⏱ Render actual → Services:", loading);
+
+
+
+if (loading) {
+  return (
+    <div className="page-spinner">
+      <Spinner />
+    </div>
+  );
+}
+
+
 
   return (
     <div className="todos-table shadow-sm p-6 rounded-xl bg-white">
-      <AddService />
-      {services.length > 0 ? (
+      { services.length > 0 ? (
         <ServiceTable />
       ) : (
         <div className="flex flex-col items-center justify-center text-center py-12 text-gray-600">

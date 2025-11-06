@@ -1,8 +1,9 @@
 import { useState } from "react";
 import './Signup.css';
 import { useNavigate } from "react-router";
+import { API_URL } from "../../api/config";
 
-const API_URL = 'https://car-mechanic-ten.vercel.app';
+
 
 const Signup = ({ onGoToLogin }) => {
 const navigate = useNavigate();

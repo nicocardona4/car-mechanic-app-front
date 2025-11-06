@@ -1,0 +1,39 @@
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.tech-spinner {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 4px solid rgba(0, 255, 255, 0.2);
+  border-left-color: cyan;
+  animation: tech-spin 1s ease-out infinite;
+  box-shadow:
+    0 0 10px cyan,
+    0 0 20px cyan,
+    0 0 40px cyan;
+  transition: 0.2s ease-in-out;
+}
+
+.page-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 70vh;
+}
+
+
+@keyframes tech-spin {
+  0% {
+    transform: rotate(0deg);
+    filter: hue-rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+    filter: hue-rotate(360deg);
+  }
+}

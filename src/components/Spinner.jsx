@@ -1,5 +1,11 @@
-export const Spinner = ({color, size}) => {
-    return (
-        <div className={`spinner-border ${color ? color : "text-light"} ${size ? size : "spinner-border-sm"}`}></div>
-    )
-}
+import "./Spinner.css";
+
+const Spinner = () => {
+  return (
+    <div className="spinner-container">
+      <div className="tech-spinner"></div>
+    </div>
+  );
+};
+
+export default Spinner;

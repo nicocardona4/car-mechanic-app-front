@@ -29,7 +29,7 @@ export const servicesSlice = createSlice({
                 service._id === id ? {...service, ...updatedService} : service
             )
         },
-        setLoading: (state, action) => {
+        setServicesLoading: (state, action) => {
             state.loading = action.payload;
         },
         setError: (state, action) => {
@@ -38,114 +38,6 @@ export const servicesSlice = createSlice({
     }
 })
 
-
-export const fetchServices = (token) => {
-    return (dispatch, getState) => {
-        console.log('Fetching services with token: v1/services', token);
-        dispatch(setLoading(true));
-        
-        fetch(`${API_URL}/v1/services`, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `${token}`
-            }
-        })
-        .then(response => {
-            if (response.status !== 200) {
-                throw new Error('Error');
-            }
-            return response.json();
-        })
-        .then(data => {
-            dispatch(setServices(data));
-            dispatch(setLoading(false));
-        })
-        .catch(error => {
-            dispatch(setError(error.message));
-            dispatch(setLoading(false));
-        });
-    }
-};
-
-export const createService = (serviceData) => {
-    return (dispatch) => {
-        const user = JSON.parse(localStorage.getItem('user'));
-        
-        fetch(`${API_URL}/v1/services`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Auth': `${user.token}`
-            },
-            body: JSON.stringify(serviceData)
-        })
-        .then(response => {
-            if (response.status !== 200 && response.status !== 201) {
-                throw new Error('Error creating service');
-            }
-            return response.json();
-        })
-        .then(newService => {
-            dispatch(addService(newService));
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            dispatch(setError(error.message));
-        });
-    }
-};
-
-export const removeService = (id) => {
-    return (dispatch) => {
-        const user = JSON.parse(localStorage.getItem('user'));
-        
-        fetch(`${API_URL}/v1/services/${id}`, {
-            method: 'DELETE',
-            headers: {
-                'Auth': `${user.token}`
-            }
-        })
-        .then(response => {
-            if (response.status !== 200 && response.status !== 204) {
-                throw new Error('Error while deleting service');
-            }
-            dispatch(deleteService(id));
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            dispatch(setError(error.message));
-        });
-    }
-};
-
-export const modifyService = (id, updates) => {
-    return (dispatch) => {
-        const user = JSON.parse(localStorage.getItem('user'));
-        
-        fetch(`${API_URL}/v1/services/${id}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `${user.token}`
-            },
-            body: JSON.stringify(updates)
-        })
-        .then(response => {
-            if (response.status !== 200) {
-                throw new Error('Error updating service');
-            }
-            return response.json();
-        })
-        .then(updatedService => {
-            dispatch(updateService({ id, updatedService }));
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            dispatch(setError(error.message));
-        });
-    }
-};
-
-export const { setServices, addService, deleteService, updateService, setLoading, setError } = servicesSlice.actions;
+export const {  setServicesLoading, setServices, addService, deleteService, updateService } = servicesSlice.actions;
 
 export default servicesSlice.reducer;

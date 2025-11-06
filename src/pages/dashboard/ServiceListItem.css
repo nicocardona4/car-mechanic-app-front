@@ -1,0 +1,69 @@
+/* Hover fila */
+.service-row:hover {
+  background: #eef4ff;
+  transition: 0.2s ease-in-out;
+}
+
+/* Badge de estado */
+.status-badge {
+  padding: 6px 10px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  border-radius: 10px;
+  text-transform: capitalize;
+  display: inline-block;
+  color: #fff;
+}
+
+/* Colores para cada estado */
+.status-pending {
+  background: #e8a000;
+}
+
+.status-in-progress {
+  background: #005ceb;
+}
+
+.status-completed {
+  background: #1dbf4f;
+}
+
+.status-cancelled {
+  background: #d63031;
+}
+
+/* Botones */
+.action-btn {
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 6px 14px;
+  font-size: 0.78rem;
+  border-radius: 8px;
+  font-weight: 600;
+  color: #fff;
+  transition: 0.25s ease;
+}
+
+/* Colores botones */
+.btn-start {
+  background: #005ceb;
+}
+
+.btn-complete {
+  background: #1dbf4f;
+}
+
+.btn-delete {
+  background: #d63031;
+}
+
+/* Interacciones */
+.action-btn:hover {
+  opacity: 0.85;
+  transform: translateY(-2px);
+}
+.action-btn:active {
+  transform: translateY(0);
+  opacity: 1;
+}

@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux"
 import ServiceListItem from "./ServiceListItem"
 import { useEffect } from "react"
-import { setServices } from "../../features/servicesSlice";
+import { setServices } from "../../store/features/servicesSlice";
 
 const ServiceTable = () => {
   const dispatch = useDispatch();
