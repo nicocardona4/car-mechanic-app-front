@@ -60,3 +60,8 @@
   border-radius: 0.5rem;
   margin-bottom: 1rem;
 }
+.field-error {
+  font-size: 0.75rem;
+  color: red;
+  margin-top: 2px;
+}

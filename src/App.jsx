@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import Login from './pages/Login/Login'
 import Signup from './pages/signup/Signup'
 import Dashboard from './pages/dashboard/Dashboard'
+import NewService from './pages/newService/NewService'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { BrowserRouter, Route, Routes } from 'react-router'
@@ -57,6 +58,7 @@ function App() {
           <Route path='/signup' element={<Signup/>}/>
           <Route path='/dashboard' element={<Dashboard/>}/>
           <Route path='/' element={<Dashboard/>}/>
+          <Route path='/newService' element={<NewService/>}/>
         </Routes>
       </BrowserRouter>
     </Provider>

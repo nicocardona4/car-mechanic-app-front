@@ -2,10 +2,12 @@ import { useDispatch, useSelector } from "react-redux"
 import ServiceListItem from "./ServiceListItem"
 import { useEffect } from "react"
 import { setServices } from "../../store/features/servicesSlice";
+import "./ServiceTable.css"
+import { useNavigate } from "react-router";
 
 const ServiceTable = () => {
   const dispatch = useDispatch();
-
+  const  navigate = useNavigate();
 //   useEffect(async() => {
 //     fetch("url")
 //     .then(response => response.json())
@@ -21,10 +23,17 @@ const ServiceTable = () => {
           <th>License plate</th>
           <th>Service type</th>
           <th>Status</th>
+          <th></th>
+          <th>            <button
+              className="add-service-btn"
+              onClick={() => navigate("/newService")}
+            >
+              +
+            </button></th>
         </tr>
       </thead>
       <tbody>
-        {services.map(service => <ServiceListItem key={service.id} customerName={service.customerName} licensePlate={service.licensePlate} serviceType={service.serviceType} status={service.status} />)}
+        {services.map(service => <ServiceListItem key={service.id} id={service.id} customerName={service.customerName} licensePlate={service.licensePlate} serviceType={service.serviceType} status={service.status} />)}
       </tbody>
     </table>
   )

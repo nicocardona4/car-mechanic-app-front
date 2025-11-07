@@ -3,24 +3,21 @@ import { useState } from "react";
 import './Login.css';
 import { API_URL } from "../../api/config";
 import { useNavigate } from "react-router";
+import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 
 const Login = ({ onLoginSuccess }) => {
   const navigate = useNavigate();
 
+  const {register, handleSubmit, reset, formState:{isValid, errors}} = useForm({mode: "onSubmit"});
 
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!username || !password) return;
-
+  const onSubmit = async (requestBody) => {
       setLoading(true);
       setError("");
-      const requestBody = { username: username, password: password }
       fetch(API_URL + "/v1/login",
         {
           method: "POST",
@@ -41,10 +38,9 @@ const Login = ({ onLoginSuccess }) => {
 
       }).catch(error => {
         if (error.message === "UNAUTHORIZED") {
-          setError("Credenciales invalidas");
+          toast.error("Invalid username or password");
         } else {
-          console.error("Login error:", error);
-          setError("Error en el servidor");
+          toast.error("Server error. Please try again later.");
         }
       }).finally(() => {
         setLoading(false);
@@ -54,35 +50,45 @@ const Login = ({ onLoginSuccess }) => {
 
   return (
     <div className="login-container">
-      <form className="login-card" onSubmit={handleSubmit}>
+      <form className="login-card" onSubmit={handleSubmit(onSubmit)}>
         <h2 className="login-title">Login</h2>
 
         <div className="form-group">
-          <label htmlFor="username">User</label>
-          <input
-            type="text"
-            id="username"
-            placeholder="username"
-            onChange={(e) => setUsername(e.target.value)}
-            disabled={loading}
-          />
-        </div>
+  <label htmlFor="username">User</label>
+  <input
+    {...register("username", { required: "Username is required", maxLength: { value: 20, message: "Maximum 20 characters" }, minLength: { value: 3, message: "Minimum 3 characters" } })}
+    type="text"
+    id="username"
+    placeholder="username"
+    disabled={loading}
+  />
+  {errors.username && (
+    <span className="field-error">{errors.username.message}</span>
+  )}
+</div>
 
-        <div className="form-group">
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            disabled={loading}
-          />
-        </div>
+<div className="form-group">
+  <label htmlFor="password">Password</label>
+  <input
+    {...register("password", {     required: "Password is required",
+    minLength: { value: 3, message: "Minimum 3 characters" },
+    maxLength: { value: 20, message: "Maximum 20 characters" },
+      pattern: { value: /^[A-Za-z0-9]+$/ , message: "Only alphanumeric characters are allowed" }
+  })}
+    type="password"
+    id="password"
+    placeholder="Password"
+    disabled={loading}
+  />
+  {errors.password && (
+    <span className="field-error">{errors.password.message}</span>
+  )}
+</div>
+
 
         {error && <p className="error-message">{error}</p>}
 
-        <button type="submit" className="login-button" disabled={loading}>
+        <button type="submit" className="login-button" disabled={!isValid}>
           {loading ? "Cargando..." : "Log In"}
         </button>
       </form>

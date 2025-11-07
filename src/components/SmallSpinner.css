@@ -1,0 +1,24 @@
+.small-spinner-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 32px; /* Ajustable según el alto de las celdas */
+}
+
+.small-spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(0, 0, 0, 0); /* tono cyan suave */
+  border-top-color: rgb(0, 0, 0);
+  border-radius: 50%;
+  animation: small-spin 0.7s linear infinite;
+  box-shadow:
+    0 0 5px rgb(28, 67, 175),
+    0 0 10px rgb(34, 65, 178);
+}
+
+@keyframes small-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

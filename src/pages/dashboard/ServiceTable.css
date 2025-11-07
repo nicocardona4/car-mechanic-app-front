@@ -1,0 +1,26 @@
+.add-service-btn {
+  width: 100%;
+  height: 100%;
+  font-size: 1.4rem;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  background: #00a0dc;
+  color: white;
+  padding: 8px 0; /* alto uniforme */
+  transition: background 0.2s ease;
+}
+
+.add-service-btn:hover {
+  background: #0084b3;
+}
+
+.add-service-btn:active {
+  background: #006b8e;
+}
+
+/* Opcional: aseguramos que todas las celdas sean suficientemente altas */
+.service-table td,
+.service-table th {
+  padding: 10px;
+}

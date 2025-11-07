@@ -20,13 +20,14 @@ export const servicesSlice = createSlice({
         },
         deleteService: (state, action) => {
             const id = action.payload;
-            state.services = state.services.filter(service => service._id !== id)
+            state.services = state.services.filter(service => service.id !== id)
         },
         updateService: (state, action) => {
+            console.log("Updating service with payload:", action.payload);
             const id = action.payload.id;
             const updatedService = action.payload.updatedService;
             state.services = state.services.map(service => 
-                service._id === id ? {...service, ...updatedService} : service
+                service.id === id ? {...service, ...updatedService} : service
             )
         },
         setServicesLoading: (state, action) => {
