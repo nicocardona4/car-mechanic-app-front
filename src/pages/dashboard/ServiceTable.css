@@ -1,26 +1,153 @@
-.add-service-btn {
+/* ===== Tabla base ===== */
+table {
   width: 100%;
-  height: 100%;
-  font-size: 1.4rem;
+  border-collapse: collapse;
+  background: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+  font-size: 0.95rem;
+}
+
+/* ===== Encabezado ===== */
+thead {
+  background: #1f6b8b;
+  color: #ffffff;
+}
+
+th, td {
+  padding: 12px 10px;
+  text-align: center;
+}
+
+tbody tr {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+tbody tr:hover {
+  background: #f7f9fa;
+}
+
+table .add-service-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  font-size: 1.2rem;
   font-weight: bold;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border: none;
   cursor: pointer;
-  background: #00a0dc;
+  background: #27a16c; /* Verde profesional */
   color: white;
-  padding: 8px 0; /* alto uniforme */
-  transition: background 0.2s ease;
+  transition: background 0.2s ease, transform 0.1s ease;
+  padding: 0;
 }
 
-.add-service-btn:hover {
-  background: #0084b3;
+table .add-service-btn:hover {
+  background: #1f8054;
 }
 
-.add-service-btn:active {
-  background: #006b8e;
+table .add-service-btn:active {
+  background: #146642;
+  transform: scale(0.92);
+}
+.filters-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
 }
 
-/* Opcional: aseguramos que todas las celdas sean suficientemente altas */
-.service-table td,
-.service-table th {
-  padding: 10px;
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  min-width: 120px;
+}
+
+.filter-group label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.25rem;
+}
+
+.filter-input {
+  padding: 0.4rem 0.6rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.4rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+  background: #fff;
+}
+
+.filter-input:focus {
+  outline: none;
+  border-color: #f97316;
+  box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.3);
+}
+
+.filters-container {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-end;
+  margin-bottom: 1rem;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.filter-group label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0.25rem;
+}
+
+.filter-input {
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid #d1d5db;
+  font-size: 0.9rem;
+}
+
+
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: 768px) {
+
+  thead {
+    display: none; /* Sacamos el header para mobile */
+  }
+
+  tbody tr {
+    display: block;
+    margin-bottom: 12px;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    padding: 10px;
+  }
+
+  td {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px;
+    text-align: right;
+  }
+
+  td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    text-transform: capitalize;
+    text-align: left;
+  }
+
+  td:last-child {
+    justify-content: center;
+  }
 }

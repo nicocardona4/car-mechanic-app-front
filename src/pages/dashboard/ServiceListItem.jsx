@@ -6,16 +6,15 @@ import { reauth } from "../../utils/reauthUtils";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
-import Spinner from "../../components/Spinner";
 import SmallSpinner from "../../components/SmallSpinner";
 
-
-const ServiceListItem = ({ id, customerName, licensePlate, serviceType, status }) => {
+const ServiceListItem = ({ id, customerName, licensePlate, serviceType, status ,imageUrl}) => {
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const handleOnClick = () => {
-    setIsLoading(true)
+    setIsLoading(true);
     fetch(API_URL + "/v1/services/" + id, {
       method: "DELETE",
       headers: {
@@ -27,28 +26,21 @@ const ServiceListItem = ({ id, customerName, licensePlate, serviceType, status }
           dispatch(deleteService(id));
           return;
         }
-        if (response.status === 401) {
-          throw new Error("UNAUTHORIZED");
-        }
+        if (response.status === 401) throw new Error("UNAUTHORIZED");
         throw new Error("INTERNAL_ERROR");
       })
       .catch(e => {
-        if (e.message === "UNAUTHORIZED") {
-          reauth(navigate)
-          return;
-        }
+        if (e.message === "UNAUTHORIZED") return reauth(navigate);
         toast.error("An error occurred while deleting the service.");
       })
-      .finally(() => setIsLoading(false))
-  }
+      .finally(() => setIsLoading(false));
+  };
 
   const handleCompleteService = (newStatus) => {
     setIsLoading(true)
     const body = { status: newStatus }
-    const payload = {
-      id: id,
-      updatedService: body
-    }
+    const payload = { id, updatedService: body }
+
     fetch(API_URL + "/v1/services/" + id, {
       method: "PUT",
       body: JSON.stringify(body),
@@ -58,83 +50,78 @@ const ServiceListItem = ({ id, customerName, licensePlate, serviceType, status }
       }
     })
       .then(response => {
-        if (response.ok) {
-          dispatch(updateService(payload));
-          return;
-        }
+        if (response.ok) return dispatch(updateService(payload));
 
-        if (response.status === 401) {
-          throw new Error("UNAUTHORIZED");
-        }
+        if (response.status === 401) throw new Error("UNAUTHORIZED");
         throw new Error("INTERNAL_ERROR");
       })
       .catch(e => {
-        if (e.message === "UNAUTHORIZED") {
-          reauth(navigate)
-          return;
-        }
-        console.error(e);
+        if (e.message === "UNAUTHORIZED") return reauth(navigate);
         toast.error("An error occurred while updating the service status.");
       })
-      .finally(() => setIsLoading(false))
+      .finally(() => setIsLoading(false));
   };
 
-if (isLoading) {
-  return (
-    <tr className="service-row">
-      <td colSpan="6">
-        <SmallSpinner />
-      </td>
-    </tr>
-  );
-}
-  return (
-    <tr className="service-row">
-      
-      <td>{customerName}</td>
-      <td>{licensePlate}</td>
-      <td>{serviceType}</td>
+  if (isLoading) {
+    return (
+      <tr className="service-row">
+        <td colSpan="6">
+          <SmallSpinner />
+        </td>
+      </tr>
+    );
+  }
 
-      {/* Badge de estado */}
-      <td>
+  return (
+    <tr className="service-row">
+      <td data-label="Customer">{customerName}</td>
+      <td data-label="License plate">{licensePlate}</td>
+      <td data-label="Service type">{serviceType}</td>
+
+      {/* Badge status */}
+      <td data-label="Status">
         <span className={`status-badge status-${status}`}>
           {status}
         </span>
       </td>
 
+      <td data-label="Image">
+        {imageUrl ? <img src={imageUrl} alt="Service" className="service-image" /> : "No image"}
+      </td>
 
-      <td>
+      {/* Action: Start / Complete / ✔ */}
+      <td data-label="Action">
+        <>
+          {status === "pending" && (
+            <button
+              onClick={() => handleCompleteService("in-progress")}
+              className="action-btn btn-start"
+            >
+              ▶
+            </button>
+          )}
 
-    <>
-      {status === "pending" && (
-        <button
-          onClick={() => handleCompleteService("in-progress")}
-          className="action-btn btn-start"
-        >
-          Start
-        </button>
-      )}
+          {status === "in-progress" && (
+            <button
+              onClick={() => handleCompleteService("completed")}
+              className="action-btn btn-complete"
+            >
+              ✓
+            </button>
+          )}
 
-      {status === "in-progress" && (
-        <button
-          onClick={() => handleCompleteService("completed")}
-          className="action-btn btn-complete"
-        >
-          Complete
-        </button>
-      )}
+          {status === "completed" && (
+            <span className="completed-icon" title="Service completed">
+              ✓
+            </span>
+          )}
+        </>
+      </td>
 
-      {status === "completed" && (
-      <span title="Service completed" className="completed-icon">✔</span>
-      )}
-
-    </>
-</td>
-
-
-      <td>
+      {/* Delete */}
+      <td data-label="Delete">
         <button onClick={handleOnClick} className="action-btn btn-delete">
-          🗑️
+          ✕
         </button>
       </td>
     </tr>

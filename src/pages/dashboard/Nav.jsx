@@ -1,9 +1,12 @@
 import { useNavigate } from "react-router";
 import "./Nav.css";
 import { API_URL } from "../../api/config";
+import { useState } from "react";
+import { toast } from "react-toastify";
 
 const Nav = () => {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleOnClickLogout = () => {
     localStorage.clear();
@@ -12,10 +15,10 @@ const Nav = () => {
 
 const handleOnClickUpgrade = () => {
   const confirmChange = window.confirm("Are you sure you want to upgrade your plan?");
-  if (!confirmChange) return; // Si cancela, no hace nada
+  if (!confirmChange) return;
 
   const token = localStorage.getItem("userToken");
-
+  setIsLoading(true);
   fetch(API_URL + "/v1/users/change-plan", {
     method: "PUT",
     headers: {
@@ -24,19 +27,31 @@ const handleOnClickUpgrade = () => {
     }
   })
     .then(response => {
-      if (!response.ok) {
-        throw new Error(response);
+      if (response.ok) {
+        toast.success("Plan upgraded successfully!");
+        return;
       }
-      return response.json();
-    })
-    .then(data => {
-      console.log("Plan updated:", data);
-      alert("✅ Plan upgraded successfully!");
+       if (response.status === 401) {
+          throw new Error("UNAUTHORIZED");
+        }
+        if (response.status === 403) {
+          throw new Error("FORBIDDEN");
+        }
+        throw new Error("INTERNAL_ERROR");
     })
     .catch(error => {
-      console.error("Error upgrading plan:", error);
-      alert("❌ Something went wrong while upgrading the plan");
-    });
+    if (error.message === "UNAUTHORIZED") {
+          reauth(navigate)
+          return;
+        }
+    if (error.message === "FORBIDDEN") {
+        toast.error("You are already on the highest plan.");
+        return;
+    }
+    toast.error("An error occurred while upgrading the plan. Please try again later.");
+    })
+    .finally(() => setIsLoading(false))
+
 };
 
 
@@ -46,7 +61,7 @@ const handleOnClickUpgrade = () => {
       <span className="nav-title">Car Mechanic App</span>
 
       <div className="nav-actions">
-        <button onClick={handleOnClickUpgrade} className="btn-upgrade">Upgrade Plan now!</button>
+        <button onClick={handleOnClickUpgrade} className="btn-upgrade">{isLoading ? "Upgrading..." : "Upgrade Plan"}</button>
         <button onClick={handleOnClickLogout} className="btn-logout">Logout</button>
       </div>
     </nav>

@@ -4,8 +4,6 @@ import Login from './pages/Login/Login'
 import Signup from './pages/signup/Signup'
 import Dashboard from './pages/dashboard/Dashboard'
 import NewService from './pages/newService/NewService'
-import 'bootstrap/dist/css/bootstrap.min.css'
-import 'bootstrap-icons/font/bootstrap-icons.css';
 import { BrowserRouter, Route, Routes } from 'react-router'
 import { ToastContainer } from 'react-toastify'
 import { Provider } from 'react-redux';

@@ -1,69 +1,98 @@
-/* Hover fila */
-.service-row:hover {
-  background: #eef4ff;
-  transition: 0.2s ease-in-out;
-}
-
-/* Badge de estado */
+/* ------- STATUS BADGES ------- */
 .status-badge {
-  padding: 6px 10px;
-  font-size: 0.78rem;
-  font-weight: 700;
-  border-radius: 10px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: bold;
   text-transform: capitalize;
   display: inline-block;
-  color: #fff;
 }
 
-/* Colores para cada estado */
+/* Pending - Gris */
 .status-pending {
-  background: #e8a000;
+  background-color: #e0e0e0;
+  color: #555;
 }
 
+/* In Progress - Azul */
 .status-in-progress {
-  background: #005ceb;
+  background-color: #0077c8;
+  color: white;
 }
 
+/* Completed - Verde */
 .status-completed {
-  background: #1dbf4f;
+  background-color: #21a67a;
+  color: white;
 }
 
-.status-cancelled {
-  background: #d63031;
-}
 
-/* Botones */
+/* ------- ACTION BUTTONS ------- */
 .action-btn {
   border: none;
-  outline: none;
   cursor: pointer;
-  padding: 6px 14px;
-  font-size: 0.78rem;
-  border-radius: 8px;
-  font-weight: 600;
-  color: #fff;
-  transition: 0.25s ease;
+  font-size: 1rem;
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: 0.2s ease;
 }
 
-/* Colores botones */
+/* Start → Azul */
 .btn-start {
-  background: #005ceb;
+  background: #0077c8;
+  color: white;
+}
+.btn-start:hover {
+  background: #005e9d;
 }
 
+/* Complete → Verde */
 .btn-complete {
-  background: #1dbf4f;
+  background: #21a67a;
+  color: white;
+}
+.btn-complete:hover {
+  background: #19865f;
 }
 
+/* Delete → Rojo sutil */
 .btn-delete {
-  background: #d63031;
+  background: #d9534f;
+  color: white;
+}
+.btn-delete:hover {
+  background: #b43f3b;
 }
 
-/* Interacciones */
-.action-btn:hover {
-  opacity: 0.85;
-  transform: translateY(-2px);
+/* Completed readonly icon */
+.completed-icon {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #21a67a;
 }
-.action-btn:active {
-  transform: translateY(0);
-  opacity: 1;
+
+/* Alinear acciones vertical y horizontalmente */
+.service-row td {
+  vertical-align: middle;
+}
+
+/* Alineación perfecta para todos los botones e iconos */
+.action-btn,
+.completed-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1; /* evita que se estiren */
+  height: 32px;
+  width: 32px;
+  margin: auto;
+}
+.service-image {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  background-color: #ffffff; /* opcional */
+  border-radius: 6px;
+  display: block;
+  margin: 0 auto;
 }

@@ -1,67 +1,136 @@
+/* === Background General === */
 .login-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1f2937 0%, #111827 50%, #000000 100%);
   display: flex;
-  justify-content: center;
   align-items: center;
-  height: 100vh;
-  background: #f3f4f6;
+  justify-content: center;
+  padding: 1rem;
 }
 
-.login-card {
-  background: white;
-  border-radius: 1rem;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-  padding: 2rem;
-  width: 300px;
+/* Wrapper que centra todo */
+.login-wrapper {
+  width: 100%;
+  max-width: 32rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.login-title {
+/* === Header del Login === */
+.login-header {
   text-align: center;
-  font-size: 1.5rem;
   margin-bottom: 1.5rem;
 }
 
+.login-logo .logo-icon {
+  font-size: 2.6rem;
+  color: #f97316;
+}
+
+.login-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 0.4rem 0;
+  color: #f3f4f6;
+}
+
+.login-subtitle {
+  font-size: 0.95rem;
+  color: #9ca3af;
+}
+
+/* === Card principal === */
+.login-card {
+  width: 100%;
+  background: white;
+  border-radius: 1rem;
+  padding: 2.2rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* === Título del Form === */
+.login-form-title {
+  font-size: 1.35rem;
+  font-weight: 600;
+  text-align: center;
+  color: #374151;
+  margin: 0;
+}
+
+/* === Inputs === */
 .form-group {
   display: flex;
   flex-direction: column;
-  margin-bottom: 1rem;
 }
 
 .form-group label {
-  margin-bottom: 0.4rem;
   font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0.4rem;
 }
 
 .form-group input {
-  padding: 0.7rem;
+  padding: 0.75rem 1rem;
   border-radius: 0.5rem;
-  border: 1px solid #ccc;
+  border: 1px solid #d1d5db;
+  font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
+.form-group input:focus {
+  outline: none;
+  border-color: transparent;
+  box-shadow: 0 0 0 2px #f97316;
+}
+
+.field-error {
+  color: #b91c1c;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+/* === Botón === */
 .login-button {
   width: 100%;
-  padding: 0.8rem;
-  background: #f97316;
-  border: none;
+  background: linear-gradient(to right, #f97316, #ea580c);
   color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
   border-radius: 0.5rem;
+  padding: 0.75rem;
   cursor: pointer;
+  transition: transform 0.2s, background 0.2s;
+}
+
+.login-button:hover:not(:disabled) {
+  transform: scale(1.05);
+  background: linear-gradient(to right, #ea580c, #c2410c);
 }
 
 .login-button:disabled {
-  background: #f3a86f;
+  background: #9ca3af;
   cursor: not-allowed;
+  opacity: 0.6;
 }
 
-.error-message {
-  color: #b91c1c;
-  background: #fef2f2;
-  padding: 0.6rem;
-  font-size: 0.85rem;
-  border-radius: 0.5rem;
-  margin-bottom: 1rem;
+.logo-circle {
+  width: 4rem;
+  height: 4rem;
+  background: #f97316;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 0.75rem auto; /* un poquito más de espacio abajo */
 }
-.field-error {
-  font-size: 0.75rem;
-  color: red;
-  margin-top: 2px;
+
+.logo-icon {
+  font-size: 2.25rem; /* un pelín más chico para que respire adentro */
+  color: white;
 }

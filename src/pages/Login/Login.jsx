@@ -10,88 +10,123 @@ import { toast } from "react-toastify";
 const Login = ({ onLoginSuccess }) => {
   const navigate = useNavigate();
 
-  const {register, handleSubmit, reset, formState:{isValid, errors}} = useForm({mode: "onSubmit"});
+  const { register, handleSubmit, reset, formState: { isValid, errors } } = useForm({ mode: "onSubmit" });
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const onSubmit = async (requestBody) => {
-      setLoading(true);
-      setError("");
-      fetch(API_URL + "/v1/login",
-        {
-          method: "POST",
-          body: JSON.stringify(requestBody),
-          headers: {
-            "Content-Type": "application/json"
-          }
+    setLoading(true);
+    setError("");
+    fetch(API_URL + "/v1/login",
+      {
+        method: "POST",
+        body: JSON.stringify(requestBody),
+        headers: {
+          "Content-Type": "application/json"
         }
-      ).then(response => {
-        if (response.status === 401) {
-          throw new Error("UNAUTHORIZED");
-        }
-        return response.json()
-      }).then(data => {
-        localStorage.setItem("userToken", data.token);
-        navigate("/dashboard");
-        return;
+      }
+    ).then(response => {
+      if (response.status === 401) {
+        throw new Error("UNAUTHORIZED");
+      }
+      return response.json()
+    }).then(data => {
+      localStorage.setItem("userToken", data.token);
+      navigate("/dashboard");
+      return;
 
-      }).catch(error => {
-        if (error.message === "UNAUTHORIZED") {
-          toast.error("Invalid username or password");
-        } else {
-          toast.error("Server error. Please try again later.");
-        }
-      }).finally(() => {
-        setLoading(false);
-      })
-    }
-  
+    }).catch(error => {
+      if (error.message === "UNAUTHORIZED") {
+        toast.error("Invalid username or password");
+      } else {
+        toast.error("Server error. Please try again later.");
+      }
+    }).finally(() => {
+      setLoading(false);
+    })
+  }
+
 
   return (
     <div className="login-container">
-      <form className="login-card" onSubmit={handleSubmit(onSubmit)}>
-        <h2 className="login-title">Login</h2>
+      <div className="login-wrapper">
 
-        <div className="form-group">
-  <label htmlFor="username">User</label>
-  <input
-    {...register("username", { required: "Username is required", maxLength: { value: 20, message: "Maximum 20 characters" }, minLength: { value: 3, message: "Minimum 3 characters" } })}
-    type="text"
-    id="username"
-    placeholder="username"
-    disabled={loading}
-  />
-  {errors.username && (
-    <span className="field-error">{errors.username.message}</span>
-  )}
-</div>
+        <div className="login-header">
+          <div className="login-logo">
+            <span className="logo-circle">
+              <span className="logo-icon">🔧</span>
+            </span>
+          </div>
+          <h1 className="login-title">Welcome Back</h1>
+          <p className="login-subtitle">Login to access</p>
+        </div>
 
-<div className="form-group">
-  <label htmlFor="password">Password</label>
-  <input
-    {...register("password", {     required: "Password is required",
-    minLength: { value: 3, message: "Minimum 3 characters" },
-    maxLength: { value: 20, message: "Maximum 20 characters" },
-      pattern: { value: /^[A-Za-z0-9]+$/ , message: "Only alphanumeric characters are allowed" }
-  })}
-    type="password"
-    id="password"
-    placeholder="Password"
-    disabled={loading}
-  />
-  {errors.password && (
-    <span className="field-error">{errors.password.message}</span>
-  )}
-</div>
+        {/* CARD DE LOGIN */}
+        <form className="login-card" onSubmit={handleSubmit(onSubmit)}>
+          <h2 className="login-form-title">Login</h2>
 
+          {/* USERNAME */}
+          <div className="form-group">
+            <label htmlFor="username">User</label>
+            <input
+              {...register("username", {
+                required: "Username is required",
+                minLength: { value: 3, message: "Minimum 3 characters" },
+                maxLength: { value: 20, message: "Maximum 20 characters" }
+              })}
+              type="text"
+              id="username"
+              placeholder="username"
+              disabled={loading}
+            />
+            {errors.username && (
+              <span className="field-error">{errors.username.message}</span>
+            )}
+          </div>
 
-        {error && <p className="error-message">{error}</p>}
+          {/* PASSWORD */}
+          <div className="form-group">
+            <label htmlFor="password">Password</label>
+            <input
+              {...register("password", {
+                required: "Password is required",
+                minLength: { value: 3, message: "Minimum 3 characters" },
+                maxLength: { value: 20, message: "Maximum 20 characters" },
+                pattern: {
+                  value: /^[A-Za-z0-9]+$/,
+                  message: "Only alphanumeric characters are allowed"
+                }
+              })}
+              type="password"
+              id="password"
+              placeholder="Password"
+              disabled={loading}
+            />
+            {errors.password && (
+              <span className="field-error">{errors.password.message}</span>
+            )}
+          </div>
 
-        <button type="submit" className="login-button" disabled={!isValid}>
-          {loading ? "Cargando..." : "Log In"}
-        </button>
-      </form>
+          {/* BOTÓN */}
+          <button type="submit" className="login-button" disabled={!isValid || loading}>
+            {loading ? "Cargando..." : "Log In"}
+          </button>
+            
+            <div className="form-footer">
+              <p className="footer-text">
+                Don't have an account?{" "}
+                <button
+                  type="button"
+                  onClick={() => navigate("/signup")}
+                  className="footer-link-button"
+                >
+                  Sign Up
+                </button>
+              </p>
+            </div>
+        </form>
+      </div>
     </div>
   );
 };

@@ -1,0 +1,70 @@
+.service-list-container {
+  background: #ffffff;
+  padding: 3rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+/* Empty state */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 4rem 1.5rem;
+  color: #374151;
+  animation: fadeIn 0.25s ease-in-out;
+}
+
+.empty-image {
+  margin-bottom: 1.5rem;
+  opacity: 0.9;
+}
+
+.empty-title {
+  font-size: 1.9rem;
+  font-weight: 600;
+  margin-bottom: 0.7rem;
+  color: #111827;
+}
+
+.empty-text {
+  color: #6B7280;
+  max-width: 420px;
+  font-size: 1rem;
+  margin-bottom: 2rem;
+  line-height: 1.5rem;
+}
+
+/* Button */
+.add-service-btn {
+  background-color: #2563eb;
+  color: white;
+  padding: 0.9rem 2rem;
+  border-radius: 10px;
+  border: none;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.add-service-btn:hover {
+  background-color: #1e4fc7;
+}
+
+.add-service-btn:active {
+  transform: scale(0.97);
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

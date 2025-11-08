@@ -5,11 +5,13 @@ import "./NewService.css";
 import { toast } from "react-toastify";
 import { reauth } from "../../utils/reauthUtils";
 import { useState, useEffect } from "react";
+import { cloudinaryURL } from "../../api/config";
 
 const NewService = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [serviceTypes, setServiceTypes] = useState([]);
+  const [file, setFile] = useState(null);
 
 
   const {
@@ -19,7 +21,7 @@ const NewService = () => {
     formState: { errors, isValid },
   } = useForm({ mode: "onBlur" });
 
- useEffect(() => {
+  useEffect(() => {
     const token = localStorage.getItem("userToken");
     if (!token) {
       reauth(navigate);
@@ -41,38 +43,73 @@ const NewService = () => {
       });
   }, []);
 
-  const onSubmit = async (body) => {
-      
-      const token = localStorage.getItem("userToken");
-      setIsLoading(true);
-      fetch(API_URL + "/v1/services",
-            {
-                method: "POST",
-                body: JSON.stringify(body),
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": token
-                }
-            }
-        ).then(response => {
-            if (response.status === 401) {
-                throw new Error("UNAUTHORIZED");
-            }
-            return response.json()
-        }).then(data => {
-            toast.success("Service created successfully");
-            navigate("/dashboard")
-        }).catch(error => {
-            if (error.message === "UNAUTHORIZED") {
-                reauth(navigate);
-            } else {
-                toast.error("Error creating service");
-            }
-        }).finally(() => {
-            setIsLoading(false);
-        })
+  const handleUploadFile = (evt) => {
+    setFile(evt.target.files[0])
   }
-  
+
+  const onSubmit = async (body) => {
+    setIsLoading(true);
+
+    //Subir la imagen a cloudinary
+    if (file) {
+      const data = new FormData();
+      //upload_preset: car-mechanic
+      data.append("upload_preset", "car-mechanic");
+      data.append("file", file);
+
+
+      try {
+        const response = await fetch(cloudinaryURL, {
+          method: "POST",
+          body: data
+        })
+        if (response.ok) {
+          const data = await response.json();
+          body.imageUrl = data.url
+        } else {
+          toast.error("An error occurred while uploading the image");
+        }
+      } catch (error) {
+        toast.error("An error occurred while uploading the image");
+        return;
+      }
+    }
+
+
+    const token = localStorage.getItem("userToken");
+    fetch(API_URL + "/v1/services",
+      {
+        method: "POST",
+        body: JSON.stringify(body),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": token
+        }
+      }
+    ).then(response => {
+      if (response.status === 401) {
+        throw new Error("UNAUTHORIZED");
+      }
+      if (response.status === 403) {
+        throw new Error("FORBIDDEN");
+      }
+      return response.json()
+    }).then(data => {
+      toast.success("Service created successfully");
+      navigate("/dashboard")
+    }).catch(error => {
+      if (error.message === "UNAUTHORIZED") {
+        reauth(navigate);
+      } else if (error.message === "FORBIDDEN") {
+        toast.error("You have reached the limit of services for your plan.");
+      } else {
+        toast.error("Error creating service");
+      }
+    }).finally(() => {
+      setIsLoading(false);
+    })
+  }
+
   return (
     <div className="new-service-container">
       <form className="new-service-card" onSubmit={handleSubmit(onSubmit)}>
@@ -153,21 +190,21 @@ const NewService = () => {
 
         <div className="form-group">
           <label htmlFor="serviceType">Service Type</label>
-        <select
-          id="serviceType"
-          {...register("serviceType", { required: "Required" })}
-        >
-          <option value="">Select one</option>
-          {serviceTypes.map((type) => (
-  <option key={type.name} value={type.name}>
-    {type.name}
-  </option>
-))}
+          <select
+            id="serviceType"
+            {...register("serviceType", { required: "Required" })}
+          >
+            <option value="">Select one</option>
+            {serviceTypes.map((type) => (
+              <option key={type.name} value={type.name}>
+                {type.name}
+              </option>
+            ))}
 
-        </select>
-        {errors.serviceType && (
-          <span className="field-error">{errors.serviceType.message}</span>
-        )}
+          </select>
+          {errors.serviceType && (
+            <span className="field-error">{errors.serviceType.message}</span>
+          )}
         </div>
 
         <div className="form-group">
@@ -187,8 +224,25 @@ const NewService = () => {
           )}
         </div>
 
+        <div className="form-group">
+          <label htmlFor="image">Image</label>
+
+          <label className="upload-label" htmlFor="fileInput">
+            {file ? file.name : "Upload Image"}
+          </label>
+
+          <input
+            id="fileInput"
+            type="file"
+            accept="image/*"
+            className="hidden-file-input"
+            onChange={handleUploadFile}
+          />
+        </div>
+
+
         <button type="submit" disabled={!isValid || isLoading}>
-          {isLoading ? "Saving..." : "Add Service"}
+          {isLoading ? "Adding..." : "Add Service"}
         </button>
       </form>
     </div>

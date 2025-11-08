@@ -1,72 +1,61 @@
-import { useState } from "react";
-import './Signup.css';
+import "./Signup.css";
 import { useNavigate } from "react-router";
 import { API_URL } from "../../api/config";
+import { useForm } from "react-hook-form";
+import { useState } from "react";
+import { toast } from "react-toastify";
 
-
-
-const Signup = ({ onGoToLogin }) => {
-const navigate = useNavigate();
-
-  const [formData, setFormData] = useState({
-    username: "",
-    email: "",
-    password: "",
-    repeatPassword: "",
-    userType: "plus"
-  });
-  const [error, setError] = useState('');
+const Signup = () => {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-    setError('');
-  };
-
-  const passwordsMatch = formData.password === formData.repeatPassword && formData.password !== '';
-  const isFormValid = formData.username && formData.email && formData.password && passwordsMatch;
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    
-    if (!isFormValid) {
-      setError('Please complete all fields correctly');
-      return;
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors, isValid }
+  } = useForm({
+    mode: "onBlur",
+    defaultValues: {
+      username: "",
+      email: "",
+      password: "",
+      repeatPassword: "",
+      userType: "plus",
     }
+  });
 
+  const password = watch("password");
+
+  const onSubmit = (data) => {
     setLoading(true);
-    setError('');
-
-    const { repeatPassword, ...signupData } = formData;
-    console.log('Submitting signup data:', signupData);
-    fetch(`${API_URL}/v1/signup`, {
-      method: 'POST',
+    const { repeatPassword, ...requestBody } = data;
+    console.log(requestBody);
+    fetch(API_URL + "/v1/signup", {
+      method: "POST",
+      body: JSON.stringify(requestBody),
       headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(signupData)
+        "Content-Type": "application/json"
+      }
     })
       .then(response => {
-        console.log('Response status:', response.status);
-        if (response.status !== 200 && response.status !== 201) {
-          return response.json().then(err => {
-            throw new Error(err.message || 'Signup failed');
+        if (!response.ok) {
+          return response.json()
+          .then(err => {
+            throw new Error(err.message || "Signup failed");
           });
         }
+
         return response.json();
       })
       .then(data => {
-        console.log('Signup successful:', data);
-        localStorage.setItem('userToken', data.token);
+        localStorage.setItem("userToken", data.token);
         navigate("/dashboard");
       })
-      .catch(error => {
-        console.error('Signup error:', error);
-        setError(error.message || 'Signup failed');
+      .catch(err => {
+        toast.error(err.message || "Signup failed");
       })
-      .finally(() => {
-        setLoading(false);
-      });
+      .finally(() => setLoading(false));
   };
 
   return (
@@ -82,99 +71,115 @@ const navigate = useNavigate();
 
         <div className="signup-form-card">
           <h2 className="form-title">Sign Up</h2>
-          
-          <form onSubmit={handleSubmit} className="form-content">
+
+          <form onSubmit={handleSubmit(onSubmit)} className="form-content">
+
+            {/* USERNAME */}
             <div className="input-field">
               <label className="input-label">Username</label>
               <input
                 type="text"
-                name="username"
-                value={formData.username}
-                onChange={handleChange}
                 className="input-control"
                 placeholder="Your username"
+                disabled={loading}
+                {...register("username", {
+                  required: "Username is required",
+                  minLength: { value: 3, message: "Minimum 3 characters" },
+                  maxLength: { value: 20, message: "Maximum 20 characters" }
+                })}
               />
+              {errors.username && <small className="field-error">{errors.username.message}</small>}
             </div>
 
+            {/* EMAIL */}
             <div className="input-field">
               <label className="input-label">Email</label>
               <input
                 type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
                 className="input-control"
                 placeholder="you@example.com"
+                disabled={loading}
+                {...register("email", {
+                  required: "Email is required",
+                  pattern: {
+                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                    message: "Invalid email format"
+                  }
+                })}
               />
+              {errors.email && <small className="field-error">{errors.email.message}</small>}
             </div>
 
+            {/* PASSWORD */}
             <div className="input-field">
               <label className="input-label">Password</label>
               <input
                 type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
                 className="input-control"
                 placeholder="Password"
+                disabled={loading}
+                {...register("password", {
+                  required: "Password is required",
+                  minLength: { value: 3, message: "Minimum 3 characters" },
+                  maxLength: { value: 20, message: "Maximum 20 characters" }
+                })}
               />
+              {errors.password && <small className="field-error">{errors.password.message}</small>}
             </div>
 
+            {/* REPEAT PASSWORD */}
             <div className="input-field">
               <label className="input-label">Repeat Password</label>
               <input
                 type="password"
-                name="repeatPassword"
-                value={formData.repeatPassword}
-                onChange={handleChange}
                 className="input-control"
                 placeholder="Repeat password"
-                style={{ 
-                  borderColor: formData.repeatPassword && !passwordsMatch ? '#f87171' : '#d1d5db'
-                }}
+                disabled={loading}
+                {...register("repeatPassword", {
+                  required: "Please repeat the password",
+                  validate: (value) =>
+                    value === password || "Passwords don't match"
+                })}
               />
-              {formData.repeatPassword && !passwordsMatch && (
-                <small style={{ color: '#dc2626', fontSize: '0.875rem', marginTop: '0.25rem' }}>
-                  Passwords don't match
-                </small>
+              {errors.repeatPassword && (
+                <small className="field-error">{errors.repeatPassword.message}</small>
               )}
             </div>
 
+            {/* PLAN */}
             <div className="input-field">
               <label className="input-label">Plan</label>
               <select
-                name="plan"
-                value={formData.plan}
-                onChange={handleChange}
                 className="input-control"
+                disabled={loading}
+                {...register("userType")}
               >
                 <option value="plus">Plus (10 services)</option>
                 <option value="premium">Premium (unlimited)</option>
               </select>
             </div>
 
-            {error && (
-              <div className="error-message">
-                {error}
-              </div>
-            )}
-
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               className="signup-button"
-              disabled={!isFormValid || loading}
+              disabled={!isValid || loading}
             >
-              {loading ? 'Creating account...' : 'Sign Up'}
+              {loading ? "Creating account..." : "Sign Up"}
             </button>
 
             <div className="form-footer">
               <p className="footer-text">
-                Already have an account?{' '}
-                <button type="button" onClick={onGoToLogin} className="footer-link-button">
+                Already have an account?{" "}
+                <button
+                  type="button"
+                  onClick={() => navigate("/login")}
+                  className="footer-link-button"
+                >
                   Login
                 </button>
               </p>
             </div>
+
           </form>
         </div>
 

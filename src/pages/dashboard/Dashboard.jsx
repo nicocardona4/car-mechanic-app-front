@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router';
 import './dashboard.css';
 import ServiceList from './ServiceList';
 import Nav from './Nav';
+import Chart from './Chart';
 
 const API_URL = '';
 
@@ -12,6 +13,9 @@ function Dashboard() {
     <div className="dashboard-container">
       <Nav />
       <ServiceList/>
+      <div>
+      <Chart />
+      </div>
     </div>
   );
 }
