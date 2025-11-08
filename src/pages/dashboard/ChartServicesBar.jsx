@@ -19,7 +19,7 @@ ChartJS.register(
     Legend
 );
 
-export const ChartTodosBar = () => {
+export const ChartServicesBar = () => {
     const services = useSelector(state => state.services.services);
     const repair = services.filter(service => service.serviceType === "repair").length
     const maintenance = services.filter(service => service.serviceType === "maintenance").length

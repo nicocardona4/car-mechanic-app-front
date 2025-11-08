@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-export const ChartTodosStats = () => {
+export const ChartServicesStats = () => {
     const services = useSelector(state => state.services.services);
     const completed = services.filter(service => service.status === "completed").length
     const pending = services.filter(service => service.status === "pending").length

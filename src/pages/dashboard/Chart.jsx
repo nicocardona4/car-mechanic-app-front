@@ -1,5 +1,5 @@
-import { ChartTodosBar } from "./ChartTodosBar"
-import { ChartTodosStats } from "./ChartTodosStats"
+import { ChartServicesBar } from "./ChartServicesBar"
+import { ChartServicesStats } from "./ChartServicesStats"
 import "./Chart.css"
 
 const Chart = () => {
@@ -7,10 +7,10 @@ const Chart = () => {
     <div className="chart-row">
       <h5>Gráficos</h5>
       <div className="chart-col">
-        <ChartTodosStats />
+        <ChartServicesStats />
       </div>
       <div className="chart-col">
-        <ChartTodosBar />
+        <ChartServicesBar />
       </div>
     </div>
   )
