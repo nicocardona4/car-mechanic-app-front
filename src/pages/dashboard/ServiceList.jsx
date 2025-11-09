@@ -166,7 +166,7 @@ const ServiceList = () => {
           <option value="all">All</option>
           <option value="pending">Pending</option>
           <option value="completed">Completed</option>
-          <option value="in_progress">In Progress</option>
+          <option value="in-progress">In Progress</option>
         </select>
       </div>
 

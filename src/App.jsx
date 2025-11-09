@@ -16,37 +16,6 @@ function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // useEffect(() => {
-  //   const storedUser = localStorage.getItem('user');
-  //   if (storedUser) {
-  //     try {
-  //       setUser(JSON.parse(storedUser));
-  //       setCurrentView('dashboard');
-  //     } catch (error) {
-  //       console.error('Error parsing user data:', error);
-  //       localStorage.removeItem('user');
-  //     }
-  //   }
-  //   setLoading(false);
-  // }, []);
-
-  // const handleLoginSuccess = (userData) => {
-  //   console.log('Login successful, user data:', userData);
-  //   setUser(userData);
-  //   localStorage.setItem('user', JSON.stringify(userData));
-  //   setCurrentView('dashboard');
-  // };
-
-  // const handleLogout = () => {
-  //   setUser(null);
-  //   localStorage.removeItem('user');
-  //   setCurrentView('login');
-  // };
-
-  // if (loading) {
-  //   return <div style={{ textAlign: 'center', padding: '50px' }}>Loading...</div>;
-  // }
-
   return (
     <Provider store={store}>
       <ToastContainer />
@@ -57,6 +26,7 @@ function App() {
           <Route path='/dashboard' element={<Dashboard/>}/>
           <Route path='/' element={<Dashboard/>}/>
           <Route path='/newService' element={<NewService/>}/>
+          <Route path='*' element={<Login/>}/>
         </Routes>
       </BrowserRouter>
     </Provider>

@@ -1,28 +1,25 @@
-
 .chart-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem; 
-  margin-bottom: 2rem;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+  width: 100%;
+}
+
+.chart-col {
+  flex: 1 1 48%;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  color: #f3f4f6;
 }
 
 .chart-row h5 {
   width: 100%;
-  margin-bottom: 1rem;
+  color: #f3f4f6;
+  font-size: 1.25rem;
   font-weight: 600;
-  color: #333;
-}
-
-.chart-col {
-  flex: 1 1 48%; 
-  background-color: #fff;
-  padding: 1rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-
-@media (max-width: 768px) {
-  .chart-col {
-    flex: 1 1 100%;
-  }
+  margin-bottom: 1rem;
 }

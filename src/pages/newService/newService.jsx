@@ -33,15 +33,36 @@ const NewService = () => {
         Authorization: `${token}`,
       },
     })
-      .then((res) => res.json())
+      .then(async (res) => {
+        if (res.status === 401) {
+          throw new Error("UNAUTHORIZED");
+        }
+
+        if (!res.ok) {
+          const text = await res.text();
+          throw new Error(`Bad response: ${text}`);
+        }
+
+        return res.json();
+      })
       .then((data) => {
-        setServiceTypes(data);
+        if (Array.isArray(data)) {
+          setServiceTypes(data);
+        } else {
+          console.warn("Unexpected data format:", data);
+          setServiceTypes([]); // evita romper el map
+        }
       })
       .catch((err) => {
-        toast.error("Error fetching service types");
-        console.log(err);
+        console.error("Error fetching service types:", err);
+        if (err.message === "UNAUTHORIZED") {
+          reauth(navigate);
+        } else {
+          toast.error("Error fetching service types");
+        }
       });
   }, []);
+
 
   const handleUploadFile = (evt) => {
     setFile(evt.target.files[0])
@@ -111,8 +132,13 @@ const NewService = () => {
   }
 
   return (
+
     <div className="new-service-container">
+
       <form className="new-service-card" onSubmit={handleSubmit(onSubmit)}>
+              <button type="button" className="back-btn" onClick={() => navigate("/dashboard")}>
+        ← Dashboard
+      </button>
         <h2>New Service</h2>
 
         <div className="form-group">

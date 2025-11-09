@@ -2,15 +2,17 @@
 table {
   width: 100%;
   border-collapse: collapse;
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.05);
   border-radius: 8px;
   overflow: hidden;
   font-size: 0.95rem;
+  color: #f3f4f6;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.3);
 }
 
 /* ===== Encabezado ===== */
 thead {
-  background: #1f6b8b;
+  background: linear-gradient(90deg, #68acff, #0c74ea);
   color: #ffffff;
 }
 
@@ -20,13 +22,14 @@ th, td {
 }
 
 tbody tr {
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 tbody tr:hover {
-  background: #f7f9fa;
+  background: rgba(249, 115, 22, 0.08);
 }
 
+/* ===== Botón dentro de la tabla ===== */
 table .add-service-btn {
   width: 30px;
   height: 30px;
@@ -38,20 +41,22 @@ table .add-service-btn {
   justify-content: center;
   border: none;
   cursor: pointer;
-  background: #27a16c; /* Verde profesional */
+  background: #22c55e; /* Verde vibrante pero profesional */
   color: white;
   transition: background 0.2s ease, transform 0.1s ease;
   padding: 0;
 }
 
 table .add-service-btn:hover {
-  background: #1f8054;
+  background: #16a34a;
 }
 
 table .add-service-btn:active {
-  background: #146642;
+  background: #15803d;
   transform: scale(0.92);
 }
+
+/* ===== Filtros ===== */
 .filters-container {
   display: flex;
   justify-content: flex-end;
@@ -70,67 +75,40 @@ table .add-service-btn:active {
 .filter-group label {
   font-size: 0.75rem;
   font-weight: 600;
-  color: #374151;
+  color: #e5e7eb;
   margin-bottom: 0.25rem;
 }
 
 .filter-input {
   padding: 0.4rem 0.6rem;
-  border: 1px solid #d1d5db;
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 0.4rem;
   font-size: 0.875rem;
   cursor: pointer;
-  background: #fff;
+  background: rgba(255, 255, 255, 0.08);
+  color: #f9fafb;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .filter-input:focus {
   outline: none;
-  border-color: #f97316;
-  box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.3);
+  border-color: #169af9;
+  box-shadow: 0 0 0 2px rgba(22, 154, 249, 0.4);
 }
-
-.filters-container {
-  display: flex;
-  gap: 1rem;
-  align-items: flex-end;
-  margin-bottom: 1rem;
-}
-
-.filter-group {
-  display: flex;
-  flex-direction: column;
-}
-
-.filter-group label {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #374151;
-  margin-bottom: 0.25rem;
-}
-
-.filter-input {
-  padding: 0.5rem 0.75rem;
-  border-radius: 0.5rem;
-  border: 1px solid #d1d5db;
-  font-size: 0.9rem;
-}
-
-
 
 /* ===== RESPONSIVE ===== */
-
 @media (max-width: 768px) {
-
   thead {
-    display: none; /* Sacamos el header para mobile */
+    display: none;
   }
 
   tbody tr {
     display: block;
     margin-bottom: 12px;
-    border: 1px solid #e5e5e5;
+    border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 8px;
     padding: 10px;
+    background: rgba(255, 255, 255, 0.05);
   }
 
   td {
@@ -145,6 +123,7 @@ table .add-service-btn:active {
     font-weight: 600;
     text-transform: capitalize;
     text-align: left;
+    color: #16a6f9;
   }
 
   td:last-child {

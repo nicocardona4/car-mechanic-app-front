@@ -1,107 +1,148 @@
+/* === Fondo global (oscuro y fluido) === */
+body {
+  min-height: 100vh;
+  margin: 0;
+  background: linear-gradient(135deg, #1f2937 0%, #111827 50%, #000000 100%);
+  background-attachment: fixed;
+  background-size: cover;
+  font-family: "Inter", sans-serif;
+  color: #f3f4f6;
+}
+
+/* === Contenedor principal del dashboard === */
 .dashboard-container {
-  padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
-.loading {
-  text-align: center;
-  padding: 50px;
+/* === Secciones internas destacadas === */
+.dashboard-section {
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 1rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  padding: 1.5rem;
 }
 
+/* === Encabezado principal === */
 .dashboard-header {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 30px;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
-.logout-button {
-  padding: 10px 20px;
-  background-color: #dc3545;
+.dashboard-header h2 {
+  color: #f9fafb;
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+/* === Botones === */
+button {
+  cursor: pointer;
+  transition: 0.25s ease;
+  font-weight: 500;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+button:hover {
+  transform: scale(1.03);
+}
+
+/* Botón principal */
+.add-button {
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(90deg, #3b82f6, #2563eb);
   color: white;
   border: none;
-  cursor: pointer;
 }
 
-.error-message {
-  padding: 15px;
-  background-color: #f8d7da;
-  color: #721c24;
-  margin-bottom: 20px;
+.add-button.disabled {
+  background-color: #555;
+  cursor: not-allowed;
 }
 
+/* Botón eliminar */
+.delete-button {
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+}
+
+.edit-button {
+  background: #f59e0b;
+  color: #1f2937;
+  border: none;
+  padding: 0.5rem 1rem;
+}
+
+/* === Cuadros de uso / estadísticas === */
 .usage-section {
   display: grid;
   grid-template-columns: 2fr 1fr;
-  gap: 20px;
-  margin-bottom: 30px;
+  gap: 1.5rem;
 }
 
 .usage-box {
-  border: 1px solid #ddd;
-  padding: 20px;
-  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: inset 0 0 12px rgba(255, 255, 255, 0.05);
 }
 
 .usage-bar {
   width: 100%;
   height: 24px;
-  background-color: #e0e0e0;
+  background-color: #374151;
   border-radius: 12px;
   overflow: hidden;
+  margin-top: 10px;
 }
 
 .usage-progress {
   height: 100%;
-  background-color: #28a745;
+  background: linear-gradient(to right, #22c55e, #15803d);
 }
 
+/* === Upgrade box === */
 .upgrade-box {
-  border: 2px solid #ffc107;
-  padding: 20px;
-  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.06);
+  padding: 1.5rem;
+  border-radius: 1rem;
   text-align: center;
 }
 
 .upgrade-button {
-  padding: 10px 20px;
-  background-color: #ffc107;
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(90deg, #facc15, #eab308);
+  color: #111827;
   border: none;
-  cursor: pointer;
   font-weight: bold;
+  margin-top: 1rem;
 }
 
+/* === Formularios / filtros === */
 .filter-section {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 20px;
-}
-
-.add-button {
-  padding: 10px 20px;
-  background-color: #28a745;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-
-.add-button.disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-}
-
-.warning-message {
-  padding: 15px;
-  background-color: #fff3cd;
-  color: #856404;
-  margin-bottom: 20px;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
 .add-form {
-  border: 1px solid #ddd;
-  padding: 20px;
-  margin-bottom: 20px;
-  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
 }
 
 .form-grid {
@@ -113,7 +154,11 @@
 .form-grid input,
 .form-grid select,
 textarea {
-  padding: 8px;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #374151;
+  background-color: #1f2937;
+  color: #f3f4f6;
 }
 
 textarea {
@@ -122,36 +167,15 @@ textarea {
   min-height: 80px;
 }
 
-.submit-button {
-  margin-top: 15px;
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-
-.submit-button.disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-}
-
-.empty-message {
-  text-align: center;
-  padding: 40px;
-  color: #999;
-}
-
+/* === Cards de servicios === */
 .service-card {
-  border: 1px solid #ddd;
-  padding: 15px;
-  margin-bottom: 15px;
-  border-radius: 8px;
-}
-
-.service-content {
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .service-image {
@@ -162,21 +186,59 @@ textarea {
 }
 
 .card-actions {
+  display: flex;
+  gap: 0.5rem;
   margin-top: 10px;
 }
 
-.edit-button {
-  padding: 5px 10px;
-  margin-right: 10px;
-  background-color: #ffc107;
-  border: none;
-  cursor: pointer;
+/* === Mensajes === */
+.empty-message {
+  text-align: center;
+  padding: 40px;
+  color: #9ca3af;
 }
 
-.delete-button {
-  padding: 5px 10px;
-  background-color: #dc3545;
-  color: white;
-  border: none;
-  cursor: pointer;
+.warning-message {
+  padding: 15px;
+  background-color: rgba(234, 179, 8, 0.2);
+  color: #facc15;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.error-message {
+  padding: 15px;
+  background-color: rgba(220, 38, 38, 0.25);
+  color: #f87171;
+  border-radius: 8px;
+  text-align: center;
+}
+
+/* === Loading === */
+.loading {
+  text-align: center;
+  padding: 50px;
+  color: #9ca3af;
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+  .usage-section {
+    grid-template-columns: 1fr;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .service-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .service-image {
+    width: 100%;
+    height: auto;
+    margin-bottom: 1rem;
+  }
 }
