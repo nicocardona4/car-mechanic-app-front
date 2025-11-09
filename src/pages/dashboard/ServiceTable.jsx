@@ -8,14 +8,14 @@ import { set } from "react-hook-form";
 import Spinner from "../../components/Spinner";
 import { API_URL } from "../../api/config";
 
-const ServiceTable = () => {
+const ServiceTable = ({ services }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
 
 
-  const services = useSelector(state => state.services.services)
+  // const services = useSelector(state => state.services.services)
   return (
      <table className="table text-center table-hover mb-0">
         <thead>

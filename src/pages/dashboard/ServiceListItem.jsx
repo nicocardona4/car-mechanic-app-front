@@ -13,6 +13,7 @@ const ServiceListItem = ({ id, customerName, licensePlate, serviceType, status ,
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+
   const handleOnClick = () => {
     setIsLoading(true);
     fetch(API_URL + "/v1/services/" + id, {
@@ -33,7 +34,7 @@ const ServiceListItem = ({ id, customerName, licensePlate, serviceType, status ,
         if (e.message === "UNAUTHORIZED") return reauth(navigate);
         toast.error("An error occurred while deleting the service.");
       })
-      .finally(() => setIsLoading(false));
+      // .finally(() => setIsLoading(false));
   };
 
   const handleCompleteService = (newStatus) => {
@@ -59,7 +60,7 @@ const ServiceListItem = ({ id, customerName, licensePlate, serviceType, status ,
         if (e.message === "UNAUTHORIZED") return reauth(navigate);
         toast.error("An error occurred while updating the service status.");
       })
-      .finally(() => setIsLoading(false));
+      // .finally(() => setIsLoading(false)); LO COMENTO PARA QUE NO SE VEA POR UN SEGUNDO LA FILA. IGUALMENTE EL PADRE ESCUCHA EL EL CAMBIO EN EL SERVICES GLOBAL Y SE EJECUTA DE NUEVO EL FILTRO
   };
 
   if (isLoading) {

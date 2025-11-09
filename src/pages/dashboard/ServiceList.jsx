@@ -14,6 +14,7 @@ import "./ServiceList.css";
 const ServiceList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [servicesWithFilter, setServicesWithFilter] = useState([]); 
 
 
   useEffect(() => {
@@ -41,6 +42,7 @@ const ServiceList = () => {
       })
       .then(data => {
         dispatch(setServices(data))
+        setServicesWithFilter(data);
       })
       .catch(e => {
         if (e.message === "UNAUTHORIZED") {
@@ -52,8 +54,14 @@ const ServiceList = () => {
       });
   }, []);
 
+
+
   const services = useSelector(state => state.services.services);
   const loading = useSelector(state => state.services.loading);
+
+  useEffect(() => {
+  handleFilterChange(); // refresca manteniendo filtros
+}, [services]);
 
   const [filters, setFilters] = useState({
     status: "all",
@@ -62,8 +70,12 @@ const ServiceList = () => {
   });
 
   const handleFilterChange = (field, value) => {
-    const updated = { ...filters, [field]: value };
-
+    let updated;
+    if(field){
+      updated = { ...filters, [field]: value };
+    }else{
+      updated = { ...filters };
+    }
     if (field === "range" && value !== "all") {
         updated.startDate = "";
         updated.endDate = "";
@@ -72,7 +84,7 @@ const ServiceList = () => {
     setFilters(updated);
 
     const token = localStorage.getItem("userToken");
-    dispatch(setServicesLoading(true));
+    // dispatch(setServicesLoading(true));
 
     let queryParams = "";
     let start = updated.startDate;
@@ -128,16 +140,17 @@ const ServiceList = () => {
         }
       })
       .then(data => {
-        dispatch(setServices(data))
+        // dispatch(setServices(data))
+        setServicesWithFilter(data);
       })
       .catch(e => {
         if (e.message === "UNAUTHORIZED") {
           reauth(navigate);
         }
       })
-      .finally(() => {
-        dispatch(setServicesLoading(false));
-      });
+      // .finally(() => {
+      //   dispatch(setServicesLoading(false));
+      // });
   }
 
 
@@ -208,8 +221,8 @@ const ServiceList = () => {
 
     </div>
       <div className="service-list-container">
-        {services.length > 0 ? (
-          <ServiceTable />
+        {servicesWithFilter.length > 0 ? (
+          <ServiceTable services={servicesWithFilter}   />
         ) : (
           <div className="empty-state">
             <div className="empty-image">

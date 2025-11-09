@@ -40,7 +40,7 @@
 
 /* Button */
 .add-service-btn {
-  color: white;
+  color: #1f2937;
   padding: 0.9rem 2rem;
   border-radius: 10px;
   border: none;
@@ -51,7 +51,7 @@
 }
 
 .add-service-btn:hover {
-  background: linear-gradient(to right, #ea580c, #c2410c);
+  background: linear-gradient(to right, #0c95ea, #097cc4);
   transform: scale(1.03);
 }
 
