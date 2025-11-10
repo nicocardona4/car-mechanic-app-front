@@ -3,16 +3,21 @@ import { deleteService, updateService } from "../../store/features/servicesSlice
 import "./ServiceListItem.css";
 import { API_URL } from "../../api/config";
 import { reauth } from "../../utils/reauthUtils";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
 import SmallSpinner from "../../components/SmallSpinner";
+import { set } from "react-hook-form";
 
-const ServiceListItem = ({ id, customerName, licensePlate, serviceType, status ,imageUrl}) => {
+const ServiceListItem = ({ id, customerName, licensePlate, serviceType, status ,imageUrl }) => {
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  
+ useEffect(() => {
+  setIsLoading(false);
+  }, [status]);
 
   const handleOnClick = () => {
     setIsLoading(true);
