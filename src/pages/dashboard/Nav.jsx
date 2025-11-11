@@ -29,7 +29,7 @@ const handleOnClickUpgrade = () => {
     .then(response => {
       if (response.ok) {
         toast.success("Plan upgraded successfully!");
-        return;
+        return response.json();
       }
        if (response.status === 401) {
           throw new Error("UNAUTHORIZED");
@@ -38,6 +38,10 @@ const handleOnClickUpgrade = () => {
           throw new Error("FORBIDDEN");
         }
         throw new Error("INTERNAL_ERROR");
+    })
+    .then(data => {
+      localStorage.setItem("userToken", data.token);
+      window.location.reload();
     })
     .catch(error => {
     if (error.message === "UNAUTHORIZED") {
