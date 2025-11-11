@@ -3,13 +3,16 @@ import { useState } from "react";
 import './Login.css';
 import { API_URL } from "../../api/config";
 import { useNavigate } from "react-router";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { setPlan } from "../../store/features/userSlice";
+
 
 
 const Login = ({ onLoginSuccess }) => {
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const { register, handleSubmit, reset, formState: { isValid, errors } } = useForm({ mode: "onSubmit" });
 
   const [error, setError] = useState("");
@@ -33,6 +36,7 @@ const Login = ({ onLoginSuccess }) => {
       return response.json()
     }).then(data => {
       localStorage.setItem("userToken", data.token);
+      dispatch(setPlan(data.userType)); 
       navigate("/dashboard");
       return;
 

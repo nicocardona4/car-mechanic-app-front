@@ -3,6 +3,9 @@ import { useSelector } from "react-redux";
 import "./Info.css";
 
 const Info = () => {
+  const plan = useSelector(state => state.user.plan);
+  console.log("Plan actual:", plan);
+
   const token = localStorage.getItem("userToken");
   let userType = null;
 

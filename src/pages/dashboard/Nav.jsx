@@ -3,10 +3,15 @@ import "./Nav.css";
 import { API_URL } from "../../api/config";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import { set } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { setPlan } from "../../store/features/userSlice";
+
 
 const Nav = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
 
   const handleOnClickLogout = () => {
     localStorage.clear();
@@ -41,9 +46,10 @@ const handleOnClickUpgrade = () => {
     })
     .then(data => {
       localStorage.setItem("userToken", data.token);
-      window.location.reload();
+      dispatch(setPlan("premium"));
     })
     .catch(error => {
+      console.error(error);
     if (error.message === "UNAUTHORIZED") {
           reauth(navigate)
           return;
