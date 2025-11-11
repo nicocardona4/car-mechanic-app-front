@@ -15,6 +15,7 @@ const ServiceList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [servicesWithFilter, setServicesWithFilter] = useState([]); 
+  const updateTrigger = useSelector(state => state.services.updateTrigger);
 
 
   useEffect(() => {
@@ -60,8 +61,9 @@ const ServiceList = () => {
   const loading = useSelector(state => state.services.loading);
 
   useEffect(() => {
+    console.log("Services or updateTrigger changed, applying filters.");
   handleFilterChange(); // refresca manteniendo filtros
-}, [services]);
+}, [services, updateTrigger]);
 
   const [filters, setFilters] = useState({
     status: "all",
@@ -132,6 +134,7 @@ const ServiceList = () => {
       }
     )
       .then(response => {
+        console.log("Response status:", response.status);
         if (response.ok) {
           return response.json();
         }
@@ -222,7 +225,7 @@ const ServiceList = () => {
     </div>
       <div className="service-list-container">
         {servicesWithFilter.length > 0 ? (
-          <ServiceTable services={servicesWithFilter}   />
+          <ServiceTable services={servicesWithFilter}  />
         ) : (
           <div className="empty-state">
             <div className="empty-image">

@@ -5,7 +5,8 @@ const API_URL = 'https://car-mechanic-ten.vercel.app';
 const initialState = {
   services: [],
   loading: false,
-  error: null
+  error: null,
+    updateTrigger: 0
 };
 
 export const servicesSlice = createSlice({
@@ -29,6 +30,9 @@ export const servicesSlice = createSlice({
             state.services = state.services.map(service => 
                 service.id === id ? {...service, ...updatedService} : service
             )
+            console.log("Services after update:", state.updateTrigger);
+            state.updateTrigger += 1;
+            console.log("Service updated. New updateTrigger:", state.updateTrigger);
         },
         setServicesLoading: (state, action) => {
             state.loading = action.payload;
