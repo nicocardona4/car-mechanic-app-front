@@ -33,7 +33,6 @@ const handleOnClickUpgrade = () => {
   })
     .then(response => {
       if (response.ok) {
-        toast.success("Plan upgraded successfully!");
         return response.json();
       }
        if (response.status === 401) {
