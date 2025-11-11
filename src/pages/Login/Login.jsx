@@ -34,6 +34,7 @@ const Login = ({ onLoginSuccess }) => {
     }).then(data => {
       localStorage.setItem("userToken", data.token);
       navigate("/dashboard");
+      toast.success("Logged in successfully!");
       return;
 
     }).catch(error => {

@@ -145,7 +145,8 @@ const NewService = () => {
           <label htmlFor="customerName">Customer Name</label>
           <input
             id="customerName"
-            {...register("customerName", { required: "Required" })}
+            {...register("customerName", { required: "Required",
+           validate: value => value.trim() !== "" || "Cannot be empty or spaces only"})}
             type="text"
             placeholder="John Doe"
           />
@@ -158,7 +159,8 @@ const NewService = () => {
           <label htmlFor="brand">Brand</label>
           <input
             id="brand"
-            {...register("brand", { required: "Required" })}
+            {...register("brand", { required: "Required",
+           validate: value => value.trim() !== "" || "Cannot be empty or spaces only"})}
             type="text"
             placeholder="Ferrari"
           />
@@ -171,7 +173,8 @@ const NewService = () => {
           <label htmlFor="model">Model</label>
           <input
             id="model"
-            {...register("model", { required: "Required" })}
+            {...register("model", { required: "Required",
+           validate: value => value.trim() !== "" || "Cannot be empty or spaces only"})}
             type="text"
             placeholder="488 Spider"
           />

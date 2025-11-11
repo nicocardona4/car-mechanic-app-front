@@ -51,6 +51,7 @@ const Signup = () => {
       .then(data => {
         localStorage.setItem("userToken", data.token);
         navigate("/dashboard");
+        toast.success("Account created successfully!");
       })
       .catch(err => {
         toast.error(err.message || "Signup failed");

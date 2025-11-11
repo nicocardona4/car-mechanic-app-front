@@ -41,7 +41,7 @@ const handleOnClickUpgrade = () => {
     })
     .then(data => {
       localStorage.setItem("userToken", data.token);
-      window.location.reload();
+      toast.success("Plan upgraded successfully!");
     })
     .catch(error => {
     if (error.message === "UNAUTHORIZED") {
