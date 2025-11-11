@@ -4,11 +4,14 @@ import { API_URL } from "../../api/config";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { setPlan } from "../../store/features/userSlice";
+
 
 const Signup = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
@@ -50,10 +53,13 @@ const Signup = () => {
       })
       .then(data => {
         localStorage.setItem("userToken", data.token);
+        console.log(data.userType);
+        dispatch(setPlan(data.userType));
         navigate("/dashboard");
         toast.success("Account created successfully!");
       })
       .catch(err => {
+        console.error(err);
         toast.error(err.message || "Signup failed");
       })
       .finally(() => setLoading(false));
