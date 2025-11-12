@@ -85,7 +85,7 @@
   line-height: 1; /* evita que se estiren */
   height: 32px;
   width: 32px;
-  margin: auto;
+  margin: 0;
 }
 .service-image {
   width: 80px;
@@ -94,5 +94,14 @@
   background-color: #ffffff; /* opcional */
   border-radius: 6px;
   display: block;
-  margin: 0 auto;
+  margin: 0;
 }
+
+.td-actions {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  width: 100%;
+  gap: 0.5rem;
+}
+

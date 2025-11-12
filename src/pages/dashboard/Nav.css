@@ -3,12 +3,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap; /* permite que los elementos bajen cuando no hay espacio */
   padding: 1rem 2rem;
   background: linear-gradient(90deg, #68acff, #0c74ea);
   color: white;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   margin-bottom: 2rem;
+  gap: 1rem;
 }
 
 /* ===== Título ===== */
@@ -22,7 +24,9 @@
 .nav-actions {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.5rem;
+  flex-wrap: wrap; /* los botones también se acomodan si no entran */
+  justify-content: flex-end;
 }
 
 /* Botón Upgrade */
@@ -37,7 +41,6 @@
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 }
-
 .btn-upgrade:hover {
   background-color: #e9f2ff;
 }
@@ -54,7 +57,35 @@
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 }
-
 .btn-logout:hover {
   background-color: #be123c;
 }
+
+/* ======== RESPONSIVE ======== */
+@media (max-width: 768px) {
+  .nav-container {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1rem 1.5rem;
+  }
+
+  .nav-title {
+    font-size: 1.2rem;
+  }
+
+  .nav-actions {
+    width: 100%;
+    justify-content: flex-start;
+    gap: 0.8rem;
+  }
+
+  .btn-upgrade,
+  .btn-logout {
+    width: 100%; /* ocupan todo el ancho en pantallas chicas */
+    text-align: center;
+    padding: 0.8rem;
+    font-size: 1rem;
+  }
+}
+
+

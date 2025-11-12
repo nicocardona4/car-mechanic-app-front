@@ -9,14 +9,14 @@ import { useNavigate } from "react-router";
 import SmallSpinner from "../../components/SmallSpinner";
 import { set } from "react-hook-form";
 
-const ServiceListItem = ({ id, customerName, licensePlate, serviceType, status ,imageUrl }) => {
+const ServiceListItem = ({ id, customerName, licensePlate, serviceType, status, imageUrl }) => {
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  
- useEffect(() => {
-  setIsLoading(false);
+
+  useEffect(() => {
+    setIsLoading(false);
   }, [status]);
 
   const handleOnClick = () => {
@@ -39,7 +39,7 @@ const ServiceListItem = ({ id, customerName, licensePlate, serviceType, status ,
         if (e.message === "UNAUTHORIZED") return reauth(navigate);
         toast.error("An error occurred while deleting the service.");
       })
-      // .finally(() => setIsLoading(false));
+    // .finally(() => setIsLoading(false));
   };
 
   const handleCompleteService = (newStatus) => {
@@ -65,7 +65,7 @@ const ServiceListItem = ({ id, customerName, licensePlate, serviceType, status ,
         if (e.message === "UNAUTHORIZED") return reauth(navigate);
         toast.error("An error occurred while updating the service status.");
       })
-      // .finally(() => setIsLoading(false)); LO COMENTO PARA QUE NO SE VEA POR UN SEGUNDO LA FILA. IGUALMENTE EL PADRE ESCUCHA EL EL CAMBIO EN EL SERVICES GLOBAL Y SE EJECUTA DE NUEVO EL FILTRO
+    // .finally(() => setIsLoading(false)); LO COMENTO PARA QUE NO SE VEA POR UN SEGUNDO LA FILA. IGUALMENTE EL PADRE ESCUCHA EL EL CAMBIO EN EL SERVICES GLOBAL Y SE EJECUTA DE NUEVO EL FILTRO
   };
 
   if (isLoading) {
@@ -126,10 +126,15 @@ const ServiceListItem = ({ id, customerName, licensePlate, serviceType, status ,
 
       {/* Delete */}
       <td data-label="Delete">
-        <button onClick={handleOnClick} className="action-btn btn-delete">
-          ✕
-        </button>
+        <div className="td-actions">
+
+          <button onClick={handleOnClick} className="action-btn btn-delete">
+            ✕
+          </button>
+        </div>
+
       </td>
+
     </tr>
   );
 };
