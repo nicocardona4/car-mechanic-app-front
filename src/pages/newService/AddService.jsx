@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { API_URL } from "../../api/config";
 import { useNavigate } from "react-router";
-import "./NewService.css";
+import "./newService.css";
 import { toast } from "react-toastify";
 import { reauth } from "../../utils/reauthUtils";
 import { useState, useEffect } from "react";
