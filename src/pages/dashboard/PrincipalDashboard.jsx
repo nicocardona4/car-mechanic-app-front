@@ -1,4 +1,4 @@
-import './dashboard.css';
+import './Dashboard.css';
 import ServiceList from './ServiceList';
 import Nav from './Nav';
 import Chart from './Chart';
