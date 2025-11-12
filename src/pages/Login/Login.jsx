@@ -17,6 +17,10 @@ const Login = ({ onLoginSuccess }) => {
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const token = localStorage.getItem('userToken');
+  if(token){
+    navigate('/dashboard');
+  }
 
   const onSubmit = async (requestBody) => {
     setLoading(true);
@@ -67,11 +71,9 @@ const Login = ({ onLoginSuccess }) => {
           <p className="login-subtitle">Login to access</p>
         </div>
 
-        {/* CARD DE LOGIN */}
         <form className="login-card" onSubmit={handleSubmit(onSubmit)}>
           <h2 className="login-form-title">Login</h2>
 
-          {/* USERNAME */}
           <div className="form-group">
             <label htmlFor="username">User</label>
             <input
@@ -90,7 +92,6 @@ const Login = ({ onLoginSuccess }) => {
             )}
           </div>
 
-          {/* PASSWORD */}
           <div className="form-group">
             <label htmlFor="password">Password</label>
             <input
@@ -113,7 +114,6 @@ const Login = ({ onLoginSuccess }) => {
             )}
           </div>
 
-          {/* BOTÓN */}
           <button type="submit" className="login-button" disabled={!isValid || loading}>
             {loading ? "Cargando..." : "Log In"}
           </button>

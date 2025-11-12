@@ -12,6 +12,10 @@ const Signup = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
+  const token = localStorage.getItem('userToken');
+  if(token){
+    navigate('/dashboard');
+  }
   const {
     register,
     handleSubmit,
@@ -81,7 +85,6 @@ const Signup = () => {
 
           <form onSubmit={handleSubmit(onSubmit)} className="form-content">
 
-            {/* USERNAME */}
             <div className="input-field">
               <label className="input-label">Username</label>
               <input
@@ -98,7 +101,6 @@ const Signup = () => {
               {errors.username && <small className="field-error">{errors.username.message}</small>}
             </div>
 
-            {/* EMAIL */}
             <div className="input-field">
               <label className="input-label">Email</label>
               <input
@@ -117,7 +119,6 @@ const Signup = () => {
               {errors.email && <small className="field-error">{errors.email.message}</small>}
             </div>
 
-            {/* PASSWORD */}
             <div className="input-field">
               <label className="input-label">Password</label>
               <input
@@ -134,7 +135,6 @@ const Signup = () => {
               {errors.password && <small className="field-error">{errors.password.message}</small>}
             </div>
 
-            {/* REPEAT PASSWORD */}
             <div className="input-field">
               <label className="input-label">Repeat Password</label>
               <input
@@ -153,7 +153,6 @@ const Signup = () => {
               )}
             </div>
 
-            {/* PLAN */}
             <div className="input-field">
               <label className="input-label">Plan</label>
               <select
