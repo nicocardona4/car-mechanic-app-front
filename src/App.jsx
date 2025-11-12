@@ -1,13 +1,13 @@
 import './App.css'
 import { useState, useEffect } from 'react'
 import Login from './pages/Login/Login'
-import Dashboard from './pages/dashboard/Dashboard'
 import NewService from './pages/newService/newService'
 import { BrowserRouter, Route, Routes } from 'react-router'
 import { ToastContainer } from 'react-toastify'
 import { Provider } from 'react-redux';
 import { store } from './store/store';
 import Signup from './pages/signup/Signup'
+import Dashboard from './pages/dashboard/Dashboard'
 
 
 
