@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 import { store } from './store/store';
 import Signup from './pages/signup/Signup'
 import Dashboard from './pages/dashboard/Dashboard'
-import NewService from './pages/newService/NewService'
+import NewService from './pages/newService/AddService'
 
 
 
