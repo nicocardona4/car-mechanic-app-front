@@ -6,7 +6,7 @@ import { ToastContainer } from 'react-toastify'
 import { Provider } from 'react-redux';
 import { store } from './store/store';
 import Signup from './pages/signup/Signup'
-import Dashboard from './pages/dashboard/Dashboard'
+import Dashboard from './pages/dashboard/PrincipalDashboard'
 import NewService from './pages/newService/AddService'
 
 
